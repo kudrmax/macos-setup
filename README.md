@@ -8,8 +8,7 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-2. Install itrem2: [link](https://iterm2.com/downloads.html)
-3. Install Oh-My-Zsh: [link](https://ohmyz.sh/)
+4. Install Oh-My-Zsh: [link](https://ohmyz.sh/)
 
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -26,6 +25,12 @@ echo "source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" >>~/.
 
 ```
 p10k configure
+```
+
+2. Install itrem2: [link](https://iterm2.com/downloads.html)
+
+```
+brew install --cask iterm2
 ```
 
 6. Configure iterm2:
