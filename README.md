@@ -17,7 +17,7 @@
 - CleanMyMac X
 - Middle
 
-## Extentions
+## Chrome extentions
 
 - [bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
 - [video-speed-controller](https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk)
@@ -125,5 +125,3 @@ brew install lazydocker
 Import settings to iterm2:
 
 Settings -> General -> Settings -> Import All Settings and Data... -> `~/.config/iTerm2 State.itermexport`
-
-
