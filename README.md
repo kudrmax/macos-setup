@@ -103,7 +103,7 @@ Configure p10k (if needed):
 p10k configure
 ```
 
-5. Install itrem2: [link](https://iterm2.com/downloads.html)
+5. Install itrem2
 
 ```
 brew install --cask iterm2
