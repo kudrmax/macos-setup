@@ -36,12 +36,33 @@ p10k configure
 
 Install: [extention](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb) and [app](https://bitwarden.com/download/)
 
+## AppCleaner
+
+```
+brew install --cask appcleaner
+```
+
 ## BTT
 
-- Install: [link](https://folivora.ai/)
+```
+brew install --cask bettertouchtool
+```
+
 - Configure:
 
 ## Karabiner
 
 - Install Karabiner-Elements:
 - Configure:
+
+## Obsidian
+
+```
+brew install --cask obsidian
+```
+
+Configure:
+
+```
+git clone ...
+```
