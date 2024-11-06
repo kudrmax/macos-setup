@@ -8,6 +8,12 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
+2. Install micro:
+
+```
+brew install micro
+```
+
 2. Clone this repo to `~`
 
 4. Install Oh-My-Zsh: [link](https://ohmyz.sh/)
