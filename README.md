@@ -8,6 +8,8 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
+2. Clone this repo to `~`
+
 4. Install Oh-My-Zsh: [link](https://ohmyz.sh/)
 
 ```
@@ -21,7 +23,14 @@ brew install powerlevel10k
 echo "source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
 ```
 
-5. Configure p10k:
+5. Replace configs
+
+```
+git restore ~/.zshrc
+git restore ~/.p10k.zsh
+```
+
+5. Configure p10k (if needed):
 
 ```
 p10k configure
