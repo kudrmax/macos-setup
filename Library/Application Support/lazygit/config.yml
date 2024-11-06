@@ -1,0 +1,27 @@
+gui:
+  language: 'en' # one of 'auto' | 'en' | 'zh-CN' | 'zh-TW' | 'pl' | 'nl' | 'ja' | 'ko' | 'ru'
+git:
+  paging:
+    pager: delta --dark --paging=never --line-numbers --side-by-side --minus-empty-line-marker-style=red
+  branchLogCmd: 'git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=oneline {{branchName}} --'
+  allBranchesLogCmd: 'git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=oneline'
+  merging:
+    args: '--no-ff'
+services:
+  'git.miem.hse.ru': 'gitlab:git.miem.hse.ru'
+customCommands:
+  - key: 'U'
+    description: 'Add a repository from GitHub'
+    context: 'localBranches'
+    prompts:
+      - type: 'input'
+        title: 'Enter GitHub URL'
+        key: 'URL'
+        initialValue: ''
+    command: 'git remote add origin {{.Form.URL}} && git branch -M master'
+    loadingText: 'Loading...'
+  - key: 'U'
+    description: 'git submodule update --init --recursive'
+    context: 'submodules'
+    command: 'git submodule update --init --recursive'
+    loadingText: 'Loading...'
