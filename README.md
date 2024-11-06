@@ -65,7 +65,7 @@ brew install --cask yandex-music
 brew install micro
 ```
 
-2. Clone this repo to `~`
+3. Clone this repo to `~`
 
 4. Oh-My-Zsh and p10k
 
@@ -103,7 +103,7 @@ Configure p10k (if needed):
 p10k configure
 ```
 
-2. Install itrem2: [link](https://iterm2.com/downloads.html)
+5. Install itrem2: [link](https://iterm2.com/downloads.html)
 
 ```
 brew install --cask iterm2
@@ -113,10 +113,10 @@ brew install --cask iterm2
 
 ```
 brew install lazygit
-brew install git-delta
+brew install git-delta # for pretty git diff
 ```
 
-1. Install lazydocker
+7. Install lazydocker
 
 ```
 brew install lazydocker
