@@ -52,6 +52,12 @@ Configure p10k (if needed):
 p10k configure
 ```
 
+2. Install itrem2: [link](https://iterm2.com/downloads.html)
+
+```
+brew install --cask iterm2
+```
+
 6. Instal lazygit:
 
 ```
@@ -59,10 +65,10 @@ brew install lazygit
 brew install git-delta
 ```
 
-2. Install itrem2: [link](https://iterm2.com/downloads.html)
+1. Install lazydocker
 
 ```
-brew install --cask iterm2
+brew install lazydocker
 ```
 
 Import settings to iterm2:
