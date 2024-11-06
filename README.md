@@ -1,3 +1,5 @@
+# MacOS setup
+
 ## Terminal
 
 1. Install brew: [link](https://brew.sh/)
