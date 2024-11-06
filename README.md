@@ -50,6 +50,13 @@ source ~/.zshrc
 p10k configure
 ```
 
+6. Instal lazygit:
+
+```
+brew install lazygit
+brew install git-delta
+```
+
 2. Install itrem2: [link](https://iterm2.com/downloads.html)
 
 ```
