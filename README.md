@@ -16,13 +16,15 @@ brew install micro
 
 2. Clone this repo to `~`
 
-4. Install Oh-My-Zsh: [link](https://ohmyz.sh/)
+4. Oh-My-Zsh and p10k
+
+Install Oh-My-Zsh:
 
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-4. Install plugins:
+Install plugins for zsh:
 
 ```
 brew install zsh-autosuggestions
@@ -30,13 +32,13 @@ brew install zsh-syntax-highlighting
 brew install zsh-you-should-use
 ```
 
-4. Install p10k: [link](https://github.com/romkatv/powerlevel10k)
+Install p10k theme: [link](https://github.com/romkatv/powerlevel10k)
 
 ```
 brew install zsh-powerlevel10k
 ```
 
-5. Replace configs
+Replace configs for Oh-My-Zsh and p10k:
 
 ```
 git restore ~/.zshrc
@@ -44,7 +46,7 @@ git restore ~/.p10k.zsh
 source ~/.zshrc
 ```
 
-5. Configure p10k (if needed):
+Configure p10k (if needed):
 
 ```
 p10k configure
@@ -63,41 +65,19 @@ brew install git-delta
 brew install --cask iterm2
 ```
 
-6. Configure iterm2:
+Import settings to iterm2:
 
-ДОПИСАТЬ
+Settings -> General -> Settings -> Import All Settings and Data... -> `~/.config/iTerm2 State.itermexport`
 
-## BitWarden
+## Another apps
 
-Install: [extention](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb) and [app](https://bitwarden.com/download/)
-
-## AppCleaner
+- [bitwarden extention](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
 
 ```
+brew install --cask bitwarden
 brew install --cask appcleaner
-```
-
-## BTT
-
-```
+brew install --cask obsidian
 brew install --cask bettertouchtool
 ```
 
-- Configure:
 
-## Karabiner
-
-- Install Karabiner-Elements:
-- Configure:
-
-## Obsidian
-
-```
-brew install --cask obsidian
-```
-
-Configure:
-
-```
-git clone ...
-```
