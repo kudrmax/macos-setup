@@ -81,6 +81,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
+	z
 #	zsh-autosuggestions
 #	zsh-syntax-highlighting
 #	zsh-eza
