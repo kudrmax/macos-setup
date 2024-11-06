@@ -22,10 +22,18 @@ brew install micro
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+4. Install plugins:
+
+```
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+brew install zsh-you-should-use
+```
+
 4. Install p10k: [link](https://github.com/romkatv/powerlevel10k)
 
 ```
-brew install powerlevel10k
+brew install zsh-powerlevel10k
 ```
 
 5. Replace configs
