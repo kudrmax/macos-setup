@@ -26,7 +26,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 ```
 brew install powerlevel10k
-echo "source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
 ```
 
 5. Replace configs
@@ -34,6 +33,7 @@ echo "source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" >>~/.
 ```
 git restore ~/.zshrc
 git restore ~/.p10k.zsh
+source ~/.zshrc
 ```
 
 5. Configure p10k (if needed):
