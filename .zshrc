@@ -149,3 +149,5 @@ export PATH=$PATH:~/PycharmProjects/import-notes-from-pocketbook/
 export PATH=$PATH:~/PycharmProjects/chatgpt_to_anki/
 
 eval "$(fzf --bash)"
+
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
