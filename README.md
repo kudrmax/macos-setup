@@ -1,5 +1,22 @@
 # MacOS setup
 
+## Extentions
+
+- [bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
+- [video-speed-controller](https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk)
+- [addblock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
+- [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
+- [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
+
+## Apps
+
+```
+brew install --cask bitwarden
+brew install --cask appcleaner
+brew install --cask obsidian
+brew install --cask bettertouchtool
+```
+
 ## Terminal
 
 1. Install brew: [link](https://brew.sh/)
@@ -74,16 +91,5 @@ brew install lazydocker
 Import settings to iterm2:
 
 Settings -> General -> Settings -> Import All Settings and Data... -> `~/.config/iTerm2 State.itermexport`
-
-## Another apps
-
-- [bitwarden extention](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
-
-```
-brew install --cask bitwarden
-brew install --cask appcleaner
-brew install --cask obsidian
-brew install --cask bettertouchtool
-```
 
 
