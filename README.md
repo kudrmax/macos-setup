@@ -117,8 +117,6 @@ brew install --cask yandex-music
 
 ### BTT
 
-Установить BTT:
-
 ```
 brew install --cask bettertouchtool
 ```
@@ -130,17 +128,15 @@ brew install --cask bettertouchtool
 
 ### Karabiner-Elements
 
-Установить Karabiner-Elements:
-
 ```
 brew install --cask karabiner-elements
 ```
 
+If you have problems with `karabiner_graber`, restart the computer.
+
 ## To do
 
 - [ ] Settings for IINA
-- [ ] Settings for Karabiner
-- [ ] Settings for lasydocker
 - [ ] Docker
 - [ ] VsCode
 - [ ] Sublime Text
