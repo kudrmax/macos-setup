@@ -1,0 +1,48 @@
+{
+    "terminal.integrated.env.osx": {
+        "FIG_NEW_SESSION": "1"
+    },
+    "workbench.colorTheme": "Default Dark Modern",
+    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "files.autoSave": "afterDelay",
+    // "latex-workshop.latex.outDir": "%DIR%/latex-out",
+    "latex-workshop.latex.tools": [
+        {
+          "name": "latexmk",
+          "command": "latexmk",
+          "args": [
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "--shell-escape",
+            // "-aux-directory=aux",
+            // "-output-directory=out",
+            "-pdf",
+            "%DOC%"
+          ]
+        },
+        {
+          "name": "pdflatex",
+          "command": "pdflatex",
+          "args": [
+            "--shell-escape",
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            // "-aux-directory=aux",
+            // "-output-directory=out",
+            "-file-line-error",
+            "%DOC%"
+          ]
+        },
+        {
+          "name": "bibtex",
+          "command": "bibtex",
+          "args": [
+            "%DOCFILE%"
+          ],
+          "env": {}
+        }
+      ],
+      "explorer.confirmDelete": false,
+      "cmake.configureOnOpen": true,
+}
