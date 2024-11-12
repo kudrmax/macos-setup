@@ -101,6 +101,7 @@ brew install --cask bitwarden
 brew install --cask appcleaner
 brew install --cask bettertouchtool
 brew install --cask karabiner-elements
+brew install --cask sublime-text
 ```
 
 - [xnip](https://xnipapp.com/)
