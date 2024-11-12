@@ -15,9 +15,9 @@ brew install micro
 ```
 
 3. Clone this repo
-  4. Clone this repo to some directory.
-  5. Manually copy all files including hidden files to `~` (you can't do it automaticly because MacOS permisions).
-  6. Check that "git status" is called from "~" and write that everything is up to date.
+   - Clone this repo to some directory.
+   - Manually copy all files including hidden files to `~` (you can't do it automaticly because MacOS permisions).
+   - Check that "git status" is called from "~" and write that everything is up to date.
 
 7. Oh-My-Zsh and p10k
 
