@@ -1,0 +1,10 @@
+[credential]
+	helper = osxkeychain
+[user]
+	name = kudrmax
+	email = mdkudryashov@edu.hse.ru
+[alias]
+	st = status
+	ch = checkout
+	br = branch
+	dog = log --oneline --graph
