@@ -17,7 +17,7 @@ brew install micro
 3. Clone this repo
    - Clone this repo to some directory.
    - Manually copy all files including hidden files to `~` (you can't do it automaticly because MacOS permisions).
-   - Check that `git status` is called from `~` and is up to date.
+   - Check that `git status` is working from `~` and is up to date.
 
 7. Oh-My-Zsh and p10k
 
