@@ -1,0 +1,21 @@
+{
+  "title": "Run Google Calendar on F4",
+  "rules": [
+    {
+      "description": "Run Google Calendar on F4",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f4"
+          },
+          "to": [
+            {
+              "shell_command": "open '/Applications/Google Календарь.app'"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
