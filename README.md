@@ -109,7 +109,8 @@ brew install --cask karabiner-elements
 brew install --cask sublime-text
 ```
 
-- [xnip](https://xnipapp.com/)
+- [Xnip](https://xnipapp.com/)
+- [Maccy](https://maccy.app/)
 - [OwlOCR](https://www.owlocr.com/)
 
 ### Chrome extentions
@@ -143,6 +144,5 @@ If you have problems with `karabiner_graber`, restart the computer.
 
 Найти альтернативу или купить (пока только взлом, то есть не могу поставить на корпоративный ноут):
 - Bartender 5
-- Alfred 5
 - CleanMyMac X
 - Middle
