@@ -19,6 +19,9 @@ brew install micro
    - Manually copy all files including hidden files to `~` (you can't do it automaticly because MacOS permisions).
    - Check that `git status` is working from `~` and is up to date.
 
+> [!WARNING]
+> If you're NOT me, be carfull with file `.gitconfig`. If you just copy the file, you will create commits in git with MY author name!
+
 4. Oh-My-Zsh and p10k
 
 Install Oh-My-Zsh:
