@@ -19,7 +19,7 @@ brew install micro
    - Manually copy all files including hidden files to `~` (you can't do it automaticly because MacOS permisions).
    - Check that `git status` is working from `~` and is up to date.
 
-7. Oh-My-Zsh and p10k
+4. Oh-My-Zsh and p10k
 
 Install Oh-My-Zsh:
 
@@ -82,19 +82,6 @@ Settings -> General -> Settings -> Import All Settings and Data... -> `~/.config
 
 ## Apps
 
-Утилиты:
-
-```
-brew install --cask bitwarden
-brew install --cask appcleaner
-brew install --cask bettertouchtool
-brew install --cask karabiner-elements
-```
-
-- [xnip](https://xnipapp.com/)
-
-Приложения:
-
 ```
 brew install --cask google-chrome
 brew install --cask telegram
@@ -105,15 +92,27 @@ brew install --cask morgen
 brew install --cask yandex-music
 ```
 
-## Chrome extentions
+## Утилиты:
+
+### Разные утилиты
+
+```
+brew install --cask bitwarden
+brew install --cask appcleaner
+brew install --cask bettertouchtool
+brew install --cask karabiner-elements
+```
+
+- [xnip](https://xnipapp.com/)
+- [OwlOCR](https://www.owlocr.com/)
+
+### Chrome extentions
 
 - [bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
 - [video-speed-controller](https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk)
 - [addblock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
 - [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
 - [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
-
-## Apps settings
 
 ### BTT
 
@@ -141,7 +140,6 @@ If you have problems with `karabiner_graber`, restart the computer.
 - [ ] VsCode
 - [ ] Sublime Text
 - [ ] Arc
-- [ ] OwlOCR
 
 Найти альтернативу или купить (пока только взлом, то есть не могу поставить на корпоративный ноут):
 - Bartender 5
