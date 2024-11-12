@@ -1,56 +1,5 @@
 # MacOS setup
 
-## To do
-
-- [ ] Settings for IINA
-- [ ] Settings for Karabiner
-- [ ] Settings for lasydocker
-- [ ] Docker
-- [ ] VsCode
-- [ ] Sublime Text
-- [ ] Arc
-- [ ] OwlOCR
-
-Найти альтернативу или купить (пока только взлом, то есть не могу поставить на корпоративный ноут):
-- Bartender 5
-- Alfred 5
-- CleanMyMac X
-- Middle
-
-## Chrome extentions
-
-- [bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
-- [video-speed-controller](https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk)
-- [addblock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
-- [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
-- [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
-
-## Apps
-
-Утилиты:
-
-```
-brew install --cask bitwarden
-brew install --cask appcleaner
-brew install --cask bettertouchtool
-brew install --cask karabiner-elements
-```
-
-- [xnip](https://xnipapp.com/)
-
-Приложения:
-
-```
-brew install --cask google-chrome
-brew install --cask telegram
-brew install --cask iina
-brew install --cask todoist
-brew install --cask obsidian
-brew install --cask morgen
-brew install --cask yandex-music
-```
-
-
 ## Terminal
 
 1. Install brew: [link](https://brew.sh/)
@@ -125,3 +74,53 @@ brew install lazydocker
 Import settings to iterm2:
 
 Settings -> General -> Settings -> Import All Settings and Data... -> `~/.config/iTerm2 State.itermexport`
+
+## Apps
+
+Утилиты:
+
+```
+brew install --cask bitwarden
+brew install --cask appcleaner
+brew install --cask bettertouchtool
+brew install --cask karabiner-elements
+```
+
+- [xnip](https://xnipapp.com/)
+
+Приложения:
+
+```
+brew install --cask google-chrome
+brew install --cask telegram
+brew install --cask iina
+brew install --cask todoist
+brew install --cask obsidian
+brew install --cask morgen
+brew install --cask yandex-music
+```
+
+## Chrome extentions
+
+- [bitwarden](https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb)
+- [video-speed-controller](https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk)
+- [addblock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
+- [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
+- [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
+
+## To do
+
+- [ ] Settings for IINA
+- [ ] Settings for Karabiner
+- [ ] Settings for lasydocker
+- [ ] Docker
+- [ ] VsCode
+- [ ] Sublime Text
+- [ ] Arc
+- [ ] OwlOCR
+
+Найти альтернативу или купить (пока только взлом, то есть не могу поставить на корпоративный ноут):
+- Bartender 5
+- Alfred 5
+- CleanMyMac X
+- Middle
