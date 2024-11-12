@@ -48,6 +48,7 @@ cd
 git restore ~/.zshrc
 git restore ~/.p10k.zsh
 source ~/.zshrc
+clear
 ```
 
 Configure p10k (if needed):
