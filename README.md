@@ -112,6 +112,16 @@ brew install --cask yandex-music
 - [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
 - [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
 
+## Apps settings
+
+### BTT
+
+ДОПИСАТЬ
+
+### Karabiner-Elements
+
+ДОПИСАТЬ
+
 ## To do
 
 - [ ] Settings for IINA
