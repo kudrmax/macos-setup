@@ -136,12 +136,6 @@ If you have problems with `karabiner_graber`, restart the computer.
 
 ## To do
 
-- [ ] Settings for IINA
-- [ ] Docker
-- [ ] VsCode
-- [ ] Sublime Text
-- [ ] Arc
-
 Найти альтернативу или купить (пока только взлом, то есть не могу поставить на корпоративный ноут):
 - Bartender 5
 - Alfred 5
