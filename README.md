@@ -38,7 +38,7 @@ brew install zsh-you-should-use
 Install p10k theme: [link](https://github.com/romkatv/powerlevel10k)
 
 ```
-brew install zsh-powerlevel10k
+brew install powerlevel10k
 ```
 
 Replace configs for Oh-My-Zsh and p10k:
