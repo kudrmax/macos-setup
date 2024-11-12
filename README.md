@@ -117,11 +117,24 @@ brew install --cask yandex-music
 
 ### BTT
 
-ДОПИСАТЬ
+Установить BTT:
+
+```
+brew install --cask bettertouchtool
+```
+
+Импортировать настройки:
+1. Presets -> Import presets -> `~/.config/btt_preset.bttpreset`
+2. Preset (in left top corner) -> delete default preset
+3. Fix 4 Finger Swipe Down: 4 Finger Swipe Down -> Application Switcher -> Use Gesture Mode
 
 ### Karabiner-Elements
 
-ДОПИСАТЬ
+Установить Karabiner-Elements:
+
+```
+brew install --cask karabiner-elements
+```
 
 ## To do
 
