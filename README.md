@@ -120,6 +120,7 @@ brew install --cask sublime-text
 - [addblock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
 - [sponsorblock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone?hl=en)
 - [omnivore](https://chromewebstore.google.com/detail/omnivore/blkggjdmcfjdbmmmlfcpplkchpeaiiab)
+- [vpn](https://chromewebstore.google.com/detail/free-vpn-proxy-vpnly/lneaocagcijjdpkcabeanfpdbmapcjjg)
 
 ### BTT
 
