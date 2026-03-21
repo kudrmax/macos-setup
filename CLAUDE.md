@@ -5,7 +5,9 @@ Dotfiles repo. Configs live in `home/`, symlinked to `~/` via `sync.sh`.
 ## Structure
 - `home/` — mirrors `~/`, contains actual config files
 - `sync.sh` — creates symlinks from `home/` to `~/`, backs up existing files
-- BTT and iTerm2 exports are skipped by sync (manual import)
+- BTT exports are skipped by sync (manual import)
+- iTerm2 — не симлинкается, а нативно указывает PrefsCustomFolder на репо (сам читает/пишет конфиг оттуда)
+- Karabiner — симлинки не работают (ломает при записи). `sync.sh` копирует repo→~/ (предупреждает если ~/новее). `copy.sh` копирует ~/→repo (запускать перед коммитом)
 
 ## Rules
 - Never edit configs outside `home/` — they're symlinks

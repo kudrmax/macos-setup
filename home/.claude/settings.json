@@ -1,15 +1,45 @@
 {
   "permissions": {
     "allow": [
-      "Read(//opt/homebrew/Cellar/python@3.14/3.14.0_1/Frameworks/Python.framework/Versions/3.14/bin/**)",
-      "Bash(.venv/bin/python --version)",
-      "Bash(.venv/bin/python:*)",
-      "Bash(docker compose:*)",
       "WebSearch",
-      "Bash(source:*)",
-      "Bash(python3:*)",
-      "Bash(python:*)",
-      "Bash(cd:*)"
+      "WebFetch",
+      "Read",
+
+      "Bash(python --version)",
+      "Bash(python3 --version)",
+      "Bash(python -m venv:*)",
+      "Bash(python3 -m venv:*)",
+      "Bash(python -c:*)",
+      "Bash(python3 -c:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(.venv/bin/pip:*)",
+      "Bash(source .venv/bin/activate:*)",
+
+      "Bash(go build:*)",
+      "Bash(go test:*)",
+      "Bash(go run:*)",
+      "Bash(go mod:*)",
+      "Bash(go vet:*)",
+      "Bash(go fmt:*)",
+      "Bash(go version)",
+
+      "Bash(pytest:*)",
+      "Bash(mypy:*)",
+      "Bash(ruff:*)",
+      "Bash(golangci-lint:*)",
+
+      "Bash(docker compose up:*)",
+      "Bash(docker compose ps:*)",
+      "Bash(docker compose logs:*)",
+      "Bash(docker compose build:*)",
+
+      "Bash(which:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(brew list:*)",
+      "Bash(brew info:*)",
+      "Bash(brew search:*)"
     ],
     "defaultMode": "default"
   },
@@ -20,6 +50,19 @@
     "frontend-design@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.claude/hooks/block-git-write.sh"
+          }
+        ]
+      }
+    ]
   },
   "language": "Русский",
   "effortLevel": "high"
