@@ -94,6 +94,10 @@ brew install --cask todoist
 brew install --cask obsidian
 brew install --cask morgen
 brew install --cask yandex-music
+brew install --cask arc
+brew install --cask qbittorrent
+brew install --cask claude
+brew install --cask bruno
 ```
 
 ## Утилиты
@@ -104,10 +108,10 @@ brew install --cask appcleaner
 brew install --cask bettertouchtool
 brew install --cask karabiner-elements
 brew install --cask sublime-text
+brew install maccy               # менеджер буфера обмена
 ```
 
 - [Xnip](https://xnipapp.com/) — скриншоты
-- [Maccy](https://maccy.app/) — менеджер буфера обмена
 - [OwlOCR](https://www.owlocr.com/) — OCR
 
 ### AI
@@ -132,6 +136,11 @@ brew install --cask karabiner-elements
 ```
 
 Конфиг симлинкается автоматически через `sync.sh`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
+
+### VPN
+
+- [Hiddify](https://github.com/hiddify/hiddify-app/releases/latest) — клиент для прокси-протоколов (Xray, Sing-box)
+- [v2RayTun](https://apps.apple.com/app/v2raytun/id1533764921) — V2Ray клиент
 
 ### Chrome расширения
 

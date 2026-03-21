@@ -11,3 +11,4 @@ Dotfiles repo. Configs live in `home/`, symlinked to `~/` via `sync.sh`.
 - Never edit configs outside `home/` — they're symlinks
 - After adding new configs: put in `home/` at the same path as `~/`, run `sync.sh`
 - Secrets (tokens, credentials) never go in repo — add to `.gitignore`
+- All apps and tools should be installed via `brew` / `brew --cask` whenever possible. Manual install only if brew package doesn't exist
