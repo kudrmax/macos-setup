@@ -80,3 +80,6 @@ cl() {
   export all_proxy="socks5://127.0.0.1:12334"
   claude "$@"
 }
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+

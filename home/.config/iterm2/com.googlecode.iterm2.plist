@@ -546,6 +546,13 @@
 	<false/>
 	<key>ThreeFingerEmulates</key>
 	<false/>
+	<key>ToolbeltTools</key>
+	<array>
+		<string>Profiles</string>
+		<string>Recent Directories</string>
+		<string>Paste History</string>
+		<string>Command History</string>
+	</array>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>findMode_iTerm</key>
