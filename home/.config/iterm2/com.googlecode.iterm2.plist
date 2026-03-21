@@ -450,7 +450,7 @@
 			<key>Screen</key>
 			<integer>-2</integer>
 			<key>Scrollback Lines</key>
-			<integer>1000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -473,10 +473,81 @@
 			<false/>
 			<key>Shortcut</key>
 			<string></string>
+			<key>Show Status Bar</key>
+			<false/>
 			<key>Silence Bell</key>
 			<false/>
 			<key>Space</key>
 			<integer>-1</integer>
+			<key>Status Bar Layout</key>
+			<dict>
+				<key>advanced configuration</key>
+				<dict>
+					<key>algorithm</key>
+					<integer>0</integer>
+					<key>auto-rainbow style</key>
+					<integer>0</integer>
+					<key>font</key>
+					<string>.AppleSystemUIFont 12</string>
+					<key>remove empty components</key>
+					<false/>
+				</dict>
+				<key>components</key>
+				<array>
+					<dict>
+						<key>class</key>
+						<string>iTermStatusBarGitComponent</string>
+						<key>configuration</key>
+						<dict>
+							<key>knobs</key>
+							<dict>
+								<key>base: compression resistance</key>
+								<integer>1</integer>
+								<key>base: priority</key>
+								<real>5</real>
+								<key>iTermStatusBarGitComponentPollingIntervalKey</key>
+								<real>2</real>
+								<key>maxwidth</key>
+								<real>+infinity</real>
+								<key>minwidth</key>
+								<integer>0</integer>
+							</dict>
+							<key>layout advanced configuration dictionary value</key>
+							<dict>
+								<key>algorithm</key>
+								<integer>0</integer>
+								<key>auto-rainbow style</key>
+								<integer>0</integer>
+								<key>remove empty components</key>
+								<false/>
+							</dict>
+						</dict>
+					</dict>
+					<dict>
+						<key>class</key>
+						<string>iTermStatusBarSearchFieldComponent</string>
+						<key>configuration</key>
+						<dict>
+							<key>knobs</key>
+							<dict>
+								<key>base: compression resistance</key>
+								<integer>1</integer>
+								<key>base: priority</key>
+								<real>5</real>
+							</dict>
+							<key>layout advanced configuration dictionary value</key>
+							<dict>
+								<key>algorithm</key>
+								<integer>0</integer>
+								<key>auto-rainbow style</key>
+								<integer>0</integer>
+								<key>remove empty components</key>
+								<false/>
+							</dict>
+						</dict>
+					</dict>
+				</array>
+			</dict>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
@@ -485,6 +556,99 @@
 			<string>xterm-256color</string>
 			<key>Transparency</key>
 			<real>0.0</real>
+			<key>Triggers</key>
+			<array>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<integer>0</integer>
+					<key>matchType</key>
+					<integer>0</integer>
+					<key>name</key>
+					<string>error</string>
+					<key>parameter</key>
+					<string>{p3#ffffffffffff,p3#b98d1cc01cc0}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>(?i)\berror\b</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<integer>0</integer>
+					<key>matchType</key>
+					<integer>0</integer>
+					<key>name</key>
+					<string>warn</string>
+					<key>parameter</key>
+					<string>{p3#ffffffffffff,p3#ffffa5bd0000}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>(?i)\bwarn(ing)?\b</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<integer>0</integer>
+					<key>matchType</key>
+					<integer>0</integer>
+					<key>name</key>
+					<string>fail</string>
+					<key>parameter</key>
+					<string>{p3#ffffffffffff,p3#b8b81c1c1c1c}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>(?i)\bfail(ed|ure)?\b</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<integer>0</integer>
+					<key>matchType</key>
+					<integer>0</integer>
+					<key>name</key>
+					<string>success</string>
+					<key>parameter</key>
+					<string>{p3#ffffffffffff,p3#636391914040}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>(?i)\bsuccess\b</string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>HighlightTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<integer>0</integer>
+					<key>matchType</key>
+					<integer>0</integer>
+					<key>name</key>
+					<string>pass</string>
+					<key>parameter</key>
+					<string>{p3#ffffffffffff,p3#636391914040}</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string>(?i)\bpass(ed)?\b</string>
+				</dict>
+			</array>
 			<key>Unlimited Scrollback</key>
 			<true/>
 			<key>Use Bold Font</key>
@@ -557,5 +721,9 @@
 	<false/>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
+	<key>kCPKSelectionViewPreferredModeKey</key>
+	<integer>0</integer>
+	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
+	<false/>
 </dict>
 </plist>
