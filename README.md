@@ -97,8 +97,16 @@ brew install --cask yandex-music
 brew install --cask arc
 brew install --cask qbittorrent
 brew install --cask claude
-brew install --cask bruno
 ```
+
+### Bruno
+
+```bash
+brew install --cask bruno
+git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
+```
+
+Коллекции запросов хранятся в отдельном приватном репо. После клонирования Bruno подхватит их автоматически (путь прописан в `preferences.json`).
 
 ## Утилиты
 

@@ -10,6 +10,11 @@ home/.config/karabiner/automatic_backups/
 # Claude Code рабочие данные (генерируются автоматически)
 home/.claude/skills/*/data/
 
+# Bruno секреты
+home/Library/Application Support/bruno/secrets.json
+home/Library/Application Support/bruno/cookies.json
+home/Library/Application Support/bruno/collection-security.json
+
 # MPV личные данные (история просмотров, закладки)
 home/.config/mpv/mpvHistory.log
 home/.config/mpv/mpvBookmark.log

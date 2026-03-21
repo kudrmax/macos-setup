@@ -1,0 +1,109 @@
+{
+	"window-bounds": {
+		"x": 0,
+		"y": 38,
+		"width": 1728,
+		"height": 1054
+	},
+	"maximized": false,
+	"lastOpenedCollections": [
+		"/Users/mdmkudryashov/bruno/avito"
+	],
+	"preferences": {
+		"request": {
+			"sslVerification": false,
+			"customCaCertificate": {
+				"enabled": false,
+				"filePath": null
+			},
+			"keepDefaultCaCertificates": {
+				"enabled": true
+			},
+			"storeCookies": true,
+			"sendCookies": true,
+			"timeout": 0,
+			"oauth2": {
+				"useSystemBrowser": false
+			}
+		},
+		"font": {
+			"codeFont": "default",
+			"codeFontSize": 13
+		},
+		"proxy": {
+			"inherit": false,
+			"config": {
+				"protocol": "http",
+				"hostname": "",
+				"port": null,
+				"auth": {
+					"username": "",
+					"password": "",
+					"disabled": true
+				},
+				"bypassProxy": ""
+			},
+			"disabled": true
+		},
+		"features": {
+			"terminal": true,
+			"apiSpec": false,
+			"fileExplorer": true,
+			"git": true,
+			"brunoJson": false
+		},
+		"secretsProviders": [],
+		"awsConfig": {
+			"enabled": false,
+			"accessKeyId": "",
+			"secretAccessKey": "",
+			"region": "",
+			"sessionToken": ""
+		},
+		"azureConfig": {
+			"enabled": false,
+			"tenantId": "",
+			"clientId": "",
+			"clientSecret": ""
+		},
+		"autoupdate": {
+			"downloadUpdates": true
+		},
+		"layout": {
+			"responsePaneOrientation": "horizontal"
+		},
+		"beta": {
+			"openapi-sync": false,
+			"nodevm": false,
+			"grpc": false
+		},
+		"onboarding": {
+			"hasLaunchedBefore": true,
+			"hasSeenWelcomeModal": true
+		},
+		"general": {
+			"defaultLocation": "/Users/mdmkudryashov/Documents/bruno",
+			"defaultWorkspacePath": "/Users/mdmkudryashov/Library/Application Support/bruno/default-workspace"
+		},
+		"autoSave": {
+			"enabled": false,
+			"interval": 1000
+		},
+		"display": {
+			"zoomPercentage": 100
+		},
+		"cache": {
+			"sslSession": {
+				"enabled": false
+			}
+		},
+		"license": {
+			"proxy": {
+				"auth": {}
+			}
+		},
+		"_migrations": {
+			"codeFontSize14to13": true
+		}
+	}
+}
