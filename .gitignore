@@ -1,1 +1,18 @@
-*
+# macOS
+**/.DS_Store
+
+# Бэкапы, создаваемые sync.sh перед заменой на симлинки
+.backup/
+
+# Karabiner автобэкапы (генерируются автоматически)
+home/.config/karabiner/automatic_backups/
+
+# Claude Code рабочие данные (генерируются автоматически)
+home/.claude/skills/*/data/
+
+# MPV личные данные (история просмотров, закладки)
+home/.config/mpv/mpvHistory.log
+home/.config/mpv/mpvBookmark.log
+home/.config/mpv/bookmarks.json
+home/.config/mpv/bookmarker.json
+

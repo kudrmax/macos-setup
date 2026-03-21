@@ -1,10 +1,12 @@
 [credential]
 	helper = osxkeychain
 [user]
-	name = kudrmax
-	email = mdkudryashov@edu.hse.ru
+	name = Maksim Kudryashov
+	email = mdmkudryashov@avito.ru
 [alias]
 	st = status
 	ch = checkout
 	br = branch
 	dog = log --oneline --graph
+[init]
+	defaultBranch = master

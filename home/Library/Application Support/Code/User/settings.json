@@ -2,7 +2,7 @@
     "terminal.integrated.env.osx": {
         "FIG_NEW_SESSION": "1"
     },
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "JetBrains Rider Dark Theme",
     "latex-workshop.latex.autoBuild.run": "onFileChange",
     "files.autoSave": "afterDelay",
     // "latex-workshop.latex.outDir": "%DIR%/latex-out",
@@ -45,4 +45,6 @@
       ],
       "explorer.confirmDelete": false,
       "cmake.configureOnOpen": true,
+      "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
+      "files.autoSaveDelay": 100,
 }

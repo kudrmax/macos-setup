@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//opt/homebrew/Cellar/python@3.14/3.14.0_1/Frameworks/Python.framework/Versions/3.14/bin/**)",
+      "Bash(.venv/bin/python --version)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(docker compose:*)",
+      "WebSearch",
+      "Bash(source:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(cd:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "language": "Русский",
+  "effortLevel": "high"
+}

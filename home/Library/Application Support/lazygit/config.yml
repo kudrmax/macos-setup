@@ -7,8 +7,6 @@ git:
   allBranchesLogCmd: 'git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=oneline'
   merging:
     args: '--no-ff'
-services:
-  'git.miem.hse.ru': 'gitlab:git.miem.hse.ru'
 customCommands:
   - key: 'U'
     description: 'Add a repository from GitHub'
