@@ -176,10 +176,6 @@
                     "to": [{ "key_code": "f4" }]
                 },
                 {
-                    "from": { "key_code": "f5" },
-                    "to": [{ "key_code": "f5" }]
-                },
-                {
                     "from": { "key_code": "f6" },
                     "to": [{ "software_function": { "iokit_power_management_sleep_system": {} } }]
                 }
