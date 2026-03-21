@@ -5,13 +5,20 @@ fi
 
 # oh-my-zsh — фреймворк для плагинов и настроек zsh
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git z)
+plugins=(git command-not-found)
 source $ZSH/oh-my-zsh.sh
 
 # Алиасы
 alias zshconfig="vim ~/.zshrc"
 alias c="clear"
 alias с="clear"
+
+# Современные замены стандартных утилит
+alias cat="bat"
+alias ls="eza --icons"
+alias ll="eza -la --icons --git"
+alias tree="eza --tree --icons"
+alias rm="trash"
 
 # nbrew — brew без корпоративного прокси (для работы вне VPN)
 nbrew() {
@@ -31,8 +38,17 @@ source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 source $BREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh
 
-# fzf — нечёткий поиск (Ctrl+R история, Ctrl+T файлы)
+# zoxide — умная навигация по директориям (замена z)
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+# fzf — нечёткий поиск (Ctrl+T файлы, Cmd+Shift+R история)
 eval "$(fzf --zsh)"
+bindkey -r '^R'  # убираем Ctrl+R у fzf, отдаём atuin
+bindkey '\e[82;9u' fzf-history-widget  # Cmd+Shift+R → fzf история (iTerm2 CSI u)
+
+# atuin — улучшенная история команд (Ctrl+R)
+eval "$(atuin init zsh)"
 
 # libpq — утилиты PostgreSQL (psql, pg_dump) без полной установки сервера
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
