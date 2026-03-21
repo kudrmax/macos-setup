@@ -11,139 +11,52 @@
 # 2. Склонировать репо
 git clone https://github.com/kudrmax/macos-setup ~/macos-setup
 
-# 3. Установить зависимости (см. разделы ниже)
+# 3. Oh-My-Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# 4. Создать симлинки
+# 4. Установить все зависимости
 cd ~/macos-setup
+brew bundle
+
+# 5. Создать симлинки
 ./sync.sh
 ```
 
 > [!WARNING]
 > `home/.gitconfig` содержит мой email. После `sync.sh` проверьте `git config user.email`.
 
-## Terminal
+## Ручная настройка после установки
 
-### Oh-My-Zsh + Powerlevel10k
+### Шрифты Powerlevel10k
 
-```bash
-# Oh-My-Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+Если не установились автоматически: [ссылка](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#manual-font-installation)
 
-# Тема
-brew install powerlevel10k
-
-# Плагины
-brew install zsh-autosuggestions
-brew install zsh-syntax-highlighting
-brew install zsh-history-substring-search
-brew install zsh-you-should-use
-
-# Инструменты
-brew install fzf
-brew install micro
-```
-
-Шрифты для p10k (если не установились автоматически): [ссылка](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#manual-font-installation)
-
-Перенастроить prompt (если нужно):
+Перенастроить prompt:
 ```bash
 p10k configure
 ```
 
 ### iTerm2
 
-```bash
-brew install --cask iterm2
-```
-
 Импорт настроек: Settings → General → Settings → Import All Settings and Data... → `~/macos-setup/home/.config/iTerm2 State.itermexport`
-
-### Lazygit + Lazydocker
-
-```bash
-brew install lazygit
-brew install git-delta  # красивый diff (side-by-side)
-brew install lazydocker
-```
-
-### Языки и рантаймы
-
-```bash
-# Go
-brew install go
-
-# Node.js (через nvm)
-brew install nvm
-
-# Python — используем venv, не conda
-
-# PostgreSQL CLI (psql, pg_dump без сервера)
-brew install libpq
-
-# LLVM
-brew install llvm
-```
-
-## Приложения
-
-```bash
-brew install --cask google-chrome
-brew install --cask telegram
-brew install --cask iina
-brew install --cask todoist
-brew install --cask obsidian
-brew install --cask morgen
-brew install --cask yandex-music
-brew install --cask arc
-brew install --cask qbittorrent
-brew install --cask claude
-```
-
-### Bruno
-
-```bash
-brew install --cask bruno
-git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
-```
-
-Коллекции запросов хранятся в отдельном приватном репо. После клонирования Bruno подхватит их автоматически (путь прописан в `preferences.json`).
-
-## Утилиты
-
-```bash
-brew install --cask bitwarden
-brew install --cask appcleaner
-brew install --cask bettertouchtool
-brew install --cask karabiner-elements
-brew install --cask sublime-text
-brew install maccy               # менеджер буфера обмена
-```
-
-- [Xnip](https://xnipapp.com/) — скриншоты
-- [OwlOCR](https://www.owlocr.com/) — OCR
-
-### AI
-
-```bash
-brew install --cask lm-studio  # локальный запуск LLM
-```
-
-Claude Code — устанавливается отдельно. Конфиги в `home/.claude/` (CLAUDE.md, settings.json, skills).
 
 ### BTT (Better Touch Tool)
 
-Импортировать настройки:
 1. Presets → Import presets → `~/macos-setup/home/.config/btt_preset.bttpreset`
 2. Preset (в левом верхнем углу) → удалить default preset
 3. Fix 4 Finger Swipe Down: 4 Finger Swipe Down → Application Switcher → Use Gesture Mode
 
 ### Karabiner Elements
 
+Конфиг копируется автоматически через `sync.sh`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
+
+### Bruno
+
 ```bash
-brew install --cask karabiner-elements
+git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
 ```
 
-Конфиг симлинкается автоматически через `sync.sh`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
+Коллекции запросов хранятся в отдельном приватном репо. После клонирования Bruno подхватит их автоматически (путь прописан в `preferences.json`).
 
 ### VPN
 
@@ -157,10 +70,16 @@ brew install --cask karabiner-elements
 - [AdBlock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
 - [SponsorBlock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone)
 
+### Ручная установка (нет в brew)
+
+- [Xnip](https://xnipapp.com/) — скриншоты
+- [OwlOCR](https://www.owlocr.com/) — OCR
+
 ## Структура репо
 
 ```
 ~/macos-setup/
+├── Brewfile                ← все brew-зависимости
 ├── sync.sh                 ← создаёт симлинки из home/ в ~/
 ├── README.md
 ├── .gitignore
