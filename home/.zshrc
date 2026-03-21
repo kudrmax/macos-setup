@@ -13,15 +13,23 @@ alias zshconfig="vim ~/.zshrc"
 alias c="clear"
 alias с="clear"
 
+# nbrew — brew без корпоративного прокси (для работы вне VPN)
+nbrew() {
+  HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew "$@"
+}
+
+# brew prefix — кешируем, чтобы не вызывать subprocess на каждый source
+BREW_PREFIX="$(brew --prefix)"
+
 # p10k — тема для prompt, настройки в ~/.p10k.zsh
-source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+source $BREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Плагины через brew (не через oh-my-zsh, т.к. brew обновляет их автоматически)
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-source $(brew --prefix)/share/zsh-you-should-use/you-should-use.plugin.zsh
+source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source $BREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh
 
 # fzf — нечёткий поиск (Ctrl+R история, Ctrl+T файлы)
 eval "$(fzf --zsh)"
@@ -31,10 +39,16 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 # llvm — clang/clang++ и утилиты (для сборки C/C++ зависимостей)
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-# nvm — управление версиями Node.js (nvm use, nvm install)
+# nvm — ленивая загрузка (грузится при первом вызове nvm/node/npm/npx)
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+_nvm_lazy_load() {
+  unset -f nvm node npm npx
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+}
+for cmd in nvm node npm npx; do
+  eval "${cmd}() { _nvm_lazy_load; ${cmd} \"\$@\" }"
+done
 
 # Go — рабочая директория и бинарники (go install кладёт сюда)
 export GOPATH="$HOME/go"
