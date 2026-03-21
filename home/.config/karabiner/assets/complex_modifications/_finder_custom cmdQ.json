@@ -1,0 +1,34 @@
+{
+  "title": "Finder",
+  "rules": [
+    {
+      "description": "Use command+Q as command+W",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+              "key_code": "q",
+              "modifiers": {
+              "mandatory": ["left_command"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "w",
+              "modifiers": [
+                "left_command", "left_option"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com.apple.finder"
+                ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
