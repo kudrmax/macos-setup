@@ -71,7 +71,7 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
 # LM Studio — локальный запуск LLM-моделей
-export PATH="$PATH:/Users/mdmkudryashov/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 # Android — Gradle кэш в Shared (для beduinv2), JDK 17, Node для сборки
 export GRADLE_USER_HOME=/Users/Shared/gradle
