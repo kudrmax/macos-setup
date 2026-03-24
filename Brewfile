@@ -28,6 +28,7 @@ brew "lazydocker"
 brew "go"
 brew "nvm"
 brew "libpq"
+brew "python"
 
 # Утилиты
 cask "maccy"
