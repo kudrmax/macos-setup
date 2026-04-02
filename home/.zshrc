@@ -20,9 +20,14 @@ alias ll="eza -la --icons --git"
 alias tree="eza --tree --icons"
 alias rm="trash"
 
-# nbrew — brew без корпоративного прокси (для работы вне VPN)
-nbrew() {
-  HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew "$@"
+# brew — всегда без корпоративного прокси
+brew() {
+  HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" command brew "$@"
+}
+
+# avito — запуск без внешнего VPN
+avito() {
+  http_proxy="" https_proxy="" all_proxy="" command avito "$@"
 }
 
 # brew prefix — кешируем, чтобы не вызывать subprocess на каждый source
