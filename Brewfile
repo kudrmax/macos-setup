@@ -30,6 +30,9 @@ brew "nvm"
 brew "libpq"
 brew "python"
 
+# Медиа
+brew "yt-dlp"
+
 # Утилиты
 cask "maccy"
 cask "bitwarden"
