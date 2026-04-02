@@ -50,6 +50,17 @@ p10k configure
 
 Конфиг копируется автоматически через `sync.sh`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
 
+### Автообновление Homebrew
+
+Устанавливает launchd-агент, который раз в сутки обновляет все формулы и cask-приложения в фоне:
+
+```bash
+brew tap domt4/autoupdate
+brew autoupdate start 86400 --upgrade --cleanup --leaves-only --ac-only
+```
+
+Логи: `~/Library/Logs/com.github.domt4.homebrew-autoupdate/com.github.domt4.homebrew-autoupdate.out`
+
 ### Bruno
 
 ```bash
