@@ -9,40 +9,52 @@ FIVE_H_RESETS_AT=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // em
 DIR=$(echo "$input" | jq -r '.workspace.current_dir // "?"')
 DIR="${DIR##*/}"
 
-# Progress bar: make_bar PCT WIDTH
-make_bar() {
-  local pct=$1
-  local width=$2
-  local filled=$((pct * width / 100))
-  [ "$filled" -gt "$width" ] && filled=$width
-  local empty=$((width - filled))
-  local bar=""
-  [ "$filled" -gt 0 ] && printf -v f "%${filled}s" && bar="${f// /▓}"
-  [ "$empty" -gt 0 ] && printf -v e "%${empty}s" && bar="${bar}${e// /░}"
-  echo "$bar"
+RESET='\033[0m'
+BOLD='\033[1m'
+
+BRIGHT="100;120;165"
+DARK="22;26;38"
+S5="56;52;52"
+S6="36;34;34"
+
+lerp() {
+  awk -v f="$1" -v t="$2" -v s="$3" -v i="$4" 'BEGIN {
+    split(f,a,";"); split(t,b,";")
+    for(j=1;j<=3;j++) c[j]=int(a[j]+(b[j]-a[j])*i/s)
+    print c[1]";"c[2]";"c[3]
+  }'
 }
 
-# Color by percentage
-color_by_pct() {
-  local pct=$1
-  if [ "$pct" -ge 90 ]; then echo '\033[31m'
-  elif [ "$pct" -ge 70 ]; then echo '\033[33m'
-  else echo '\033[32m'; fi
+text_color() {
+  echo "$1" | awk -F';' '{lum=$1*0.299+$2*0.587+$3*0.114; print (lum>140) ? "\033[38;2;30;30;30m" : "\033[97m"}'
 }
 
-# Session elapsed minutes
+arr()     { echo -en "\033[38;2;${1}m\033[48;2;${2}m\xee\x82\xb4"; }
+end_cap() { echo -e "${RESET}\033[38;2;${1}m\xee\x82\xb4${RESET}"; }
+
+S2=$(lerp "$BRIGHT" "$DARK" 4 1)
+S3=$(lerp "$BRIGHT" "$DARK" 4 2)
+S4=$(lerp "$BRIGHT" "$DARK" 4 3)
+
 MINS=$((DURATION_MS / 60000))
+SESSION_H=$((MINS / 60))
+SESSION_M=$((MINS % 60))
+[ "$SESSION_M" -gt 0 ] && SESSION_STR="${SESSION_H}h ${SESSION_M}m" || SESSION_STR="${SESSION_H}h"
 
-# Context bar
-CTX_CLR=$(color_by_pct "$PCT")
-CTX_BAR=$(make_bar "$PCT" 10)
+# Segment 1: DIR
+fg=$(text_color "$BRIGHT")
+echo -en "\033[38;2;${BRIGHT}m\xee\x82\xb6\033[48;2;${BRIGHT}m${fg} ${BOLD}${DIR}\033[48;2;${BRIGHT}m${fg} "
 
-# 5h rate limit section
-RATE_SECTION=""
+# Segment 2: MODEL
+fg=$(text_color "$S2")
+arr "$BRIGHT" "$S2"
+echo -en "\033[48;2;${S2}m${fg} ${MODEL}\033[48;2;${S2}m${fg} "
+
+PREV="$S2"
+
 if [ -n "$FIVE_H" ]; then
   FIVE_H_INT=${FIVE_H%%.*}
 
-  # Elapsed time in 5h window from resets_at
   WINDOW_ELAPSED_MINS=0
   if [ -n "$FIVE_H_RESETS_AT" ]; then
     NOW=$(date +%s)
@@ -53,40 +65,40 @@ if [ -n "$FIVE_H" ]; then
     [ "$WINDOW_ELAPSED_MINS" -gt 300 ] && WINDOW_ELAPSED_MINS=300
   fi
 
-  # Budget pace emoji: compare actual 5h usage vs expected at elapsed window time
-  # Formula: expected_pct = elapsed_mins / 300 * 100
   EXPECTED_PCT=$((WINDOW_ELAPSED_MINS * 100 / 300))
   DIFF=$((FIVE_H_INT - EXPECTED_PCT))
   DIFF_ABS=${DIFF#-}
   [ "$DIFF" -gt 0 ] && DIFF_SIGNED="+${DIFF}" || DIFF_SIGNED="${DIFF}"
-  if [ "$DIFF_ABS" -le 2 ]; then
-    EMOJI="🔥"   # on pace (within ±2%)
-  elif [ "$DIFF" -lt -2 ]; then
-    EMOJI="🧊"   # spending less than expected — ahead of budget
-  else
-    EMOJI="🚨"   # spending more than expected — burning too fast
-  fi
+  if [ "$DIFF_ABS" -le 2 ]; then EMOJI="🔥"
+  elif [ "$DIFF" -lt -2 ]; then EMOJI="🧊"
+  else EMOJI="🚨"; fi
 
-  # 5h usage bar
-  RATE_CLR=$(color_by_pct "$FIVE_H_INT")
-  RATE_BAR=$(make_bar "$FIVE_H_INT" 10)
-
-  # Elapsed time bar + remaining time display
-  ELAPSED_PCT=$((WINDOW_ELAPSED_MINS * 100 / 300))
-  TIME_BAR=$(make_bar "$ELAPSED_PCT" 10)
   REMAINING_MINS=$((300 - WINDOW_ELAPSED_MINS))
   REMAINING_H=$((REMAINING_MINS / 60))
   REMAINING_M=$((REMAINING_MINS % 60))
   [ "$REMAINING_M" -gt 0 ] && REMAINING_STR="${REMAINING_H}h ${REMAINING_M}m" || REMAINING_STR="${REMAINING_H}h"
 
-  if [ "$DIFF_ABS" -le 2 ]; then PCT_CLR='\033[32m'    # green — on pace (🔥)
-  elif [ "$DIFF" -lt -2 ]; then PCT_CLR='\033[34m'   # blue — under budget (🧊)
-  else PCT_CLR='\033[31m'; fi                         # red — over budget (🚨)
-  RATE_SECTION="${PCT_CLR}${FIVE_H_INT}%\033[0m (${EMOJI} ${DIFF_SIGNED}%)  ${REMAINING_STR}  |  "
+  # Segment 3: rate
+  fg=$(text_color "$S3")
+  arr "$PREV" "$S3"
+  echo -en "\033[48;2;${S3}m${fg} ${EMOJI} ${FIVE_H_INT}% (${DIFF_SIGNED}%)\033[48;2;${S3}m${fg} "
+
+  # Segment 4: remaining
+  fg=$(text_color "$S4")
+  arr "$S3" "$S4"
+  echo -en "\033[48;2;${S4}m${fg} ${REMAINING_STR}\033[48;2;${S4}m${fg} "
+
+  PREV="$S4"
 fi
 
-SESSION_H=$((MINS / 60))
-SESSION_M=$((MINS % 60))
-[ "$SESSION_M" -gt 0 ] && SESSION_STR="${SESSION_H}h ${SESSION_M}m" || SESSION_STR="${SESSION_H}h"
+# Segment 5: ctx
+fg=$(text_color "$S5")
+arr "$PREV" "$S5"
+echo -en "\033[48;2;${S5}m${fg} ctx ${PCT}%\033[48;2;${S5}m${fg} "
 
-echo -e "\033[1m${DIR}\033[0m  |  \033[36m${MODEL}\033[0m  |  ${RATE_SECTION}ctx ${PCT}%  |  ${SESSION_STR}"
+# Segment 6: session
+fg=$(text_color "$S6")
+arr "$S5" "$S6"
+echo -en "\033[48;2;${S6}m${fg} ${SESSION_STR}\033[48;2;${S6}m${fg} "
+
+end_cap "$S6"
