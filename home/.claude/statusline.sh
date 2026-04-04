@@ -32,6 +32,21 @@ text_color() {
 arr()     { echo -en "\033[38;2;${1}m\033[48;2;${2}m\xee\x82\xb4"; }
 end_cap() { echo -e "${RESET}\033[38;2;${1}m\xee\x82\xb4${RESET}"; }
 
+row_start() {
+  local bg="$1" text="$2" bold="${3:-}"
+  local fg
+  fg=$(text_color "$bg")
+  echo -en "\033[38;2;${bg}m\xee\x82\xb6\033[48;2;${bg}m${fg}${bold} ${text}\033[48;2;${bg}m${fg} "
+}
+
+seg() {
+  local prev_bg="$1" bg="$2" text="$3"
+  local fg
+  fg=$(text_color "$bg")
+  arr "$prev_bg" "$bg"
+  echo -en "\033[48;2;${bg}m${fg} ${text}\033[48;2;${bg}m${fg} "
+}
+
 S2=$(lerp "$BRIGHT" "$DARK" 4 1)
 S3=$(lerp "$BRIGHT" "$DARK" 4 2)
 S4=$(lerp "$BRIGHT" "$DARK" 4 3)
@@ -41,16 +56,9 @@ SESSION_H=$((MINS / 60))
 SESSION_M=$((MINS % 60))
 [ "$SESSION_M" -gt 0 ] && SESSION_STR="${SESSION_H}h ${SESSION_M}m" || SESSION_STR="${SESSION_H}h"
 
-# Segment 1: DIR
-fg=$(text_color "$BRIGHT")
-echo -en "\033[38;2;${BRIGHT}m\xee\x82\xb6\033[48;2;${BRIGHT}m${fg} ${BOLD}${DIR}\033[48;2;${BRIGHT}m${fg} "
-
-# Segment 2: MODEL
-fg=$(text_color "$S2")
-arr "$BRIGHT" "$S2"
-echo -en "\033[48;2;${S2}m${fg} ${MODEL}\033[48;2;${S2}m${fg} "
-
-PREV="$S2"
+# Line 1: DIR | MODEL [| rate | remaining]
+row_start "$BRIGHT" "$DIR" "$BOLD"
+seg "$BRIGHT" "$S2" "$MODEL"
 
 if [ -n "$FIVE_H" ]; then
   FIVE_H_INT=${FIVE_H%%.*}
@@ -78,27 +86,12 @@ if [ -n "$FIVE_H" ]; then
   REMAINING_M=$((REMAINING_MINS % 60))
   [ "$REMAINING_M" -gt 0 ] && REMAINING_STR="${REMAINING_H}h ${REMAINING_M}m" || REMAINING_STR="${REMAINING_H}h"
 
-  # Segment 3: rate
-  fg=$(text_color "$S3")
-  arr "$PREV" "$S3"
-  echo -en "\033[48;2;${S3}m${fg} ${EMOJI} ${FIVE_H_INT}% (${DIFF_SIGNED}%)\033[48;2;${S3}m${fg} "
-
-  # Segment 4: remaining
-  fg=$(text_color "$S4")
-  arr "$S3" "$S4"
-  echo -en "\033[48;2;${S4}m${fg} ${REMAINING_STR}\033[48;2;${S4}m${fg} "
-
-  PREV="$S4"
+  seg "$S2" "$S3" "${EMOJI} ${FIVE_H_INT}% (${DIFF_SIGNED}%)"
+  seg "$S3" "$S4" "$REMAINING_STR"
+  end_cap "$S4"
+else
+  end_cap "$S2"
 fi
 
-# Segment 5: ctx
-fg=$(text_color "$S5")
-arr "$PREV" "$S5"
-echo -en "\033[48;2;${S5}m${fg} ctx ${PCT}%\033[48;2;${S5}m${fg} "
-
-# Segment 6: session
-fg=$(text_color "$S6")
-arr "$S5" "$S6"
-echo -en "\033[48;2;${S6}m${fg} ${SESSION_STR}\033[48;2;${S6}m${fg} "
-
-end_cap "$S6"
+# Line 2: plain text
+echo -e "ctx ${PCT}%   ${SESSION_STR}"
