@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "npx",
+      "args": [
+        "notebooklm-mcp@latest"
+      ]
+    }
+  },
+  "preferences": {
+    "quickEntryDictationShortcut": {
+      "accelerator": "Shift+Alt+Ctrl+Cmd+R"
+    },
+    "coworkScheduledTasksEnabled": true,
+    "ccdScheduledTasksEnabled": true,
+    "sidebarMode": "chat",
+    "coworkWebSearchEnabled": true,
+    "keepAwakeEnabled": true
+  }
+}
