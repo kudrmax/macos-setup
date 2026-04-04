@@ -60,16 +60,18 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 # llvm — clang/clang++ и утилиты (для сборки C/C++ зависимостей)
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-# nvm — ленивая загрузка (грузится при первом вызове nvm/node/npm/npx)
-export NVM_DIR="$HOME/.nvm"
-_nvm_lazy_load() {
-  unset -f nvm node npm npx
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-}
-for cmd in nvm node npm npx; do
-  eval "${cmd}() { _nvm_lazy_load; ${cmd} \"\$@\" }"
+# nvm — ленивая загрузка (NVM_DIR задан в .zshenv)
+for _nvm_cmd in nvm node npm npx; do
+  eval "
+    ${_nvm_cmd}() {
+      unset -f nvm node npm npx
+      [ -s '/opt/homebrew/opt/nvm/nvm.sh' ] && . '/opt/homebrew/opt/nvm/nvm.sh'
+      [ -s '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm' ] && . '/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm'
+      ${_nvm_cmd} \"\\\$@\"
+    }
+  "
 done
+unset _nvm_cmd
 
 # Go — рабочая директория и бинарники (go install кладёт сюда)
 export GOPATH="$HOME/go"
@@ -78,10 +80,9 @@ export PATH="$PATH:$GOPATH/bin"
 # LM Studio — локальный запуск LLM-моделей
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
-# Android — Gradle кэш в Shared (для beduinv2), JDK 17, Node для сборки
+# Android — Gradle кэш в Shared (для beduinv2), JDK 17
 export GRADLE_USER_HOME=/Users/Shared/gradle
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
-export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 
 # life() — запуск Claude в проекте life-analytics через прокси
 life() {
