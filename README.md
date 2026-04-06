@@ -81,6 +81,17 @@ git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
 - [AdBlock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
 - [SponsorBlock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone)
 
+### kanban-md
+
+Kanban-доска в markdown-файлах: https://github.com/antopolskiy/kanban-md
+
+Устанавливается через tap (уже прописан в Brewfile, `brew bundle` сделает автоматически):
+
+```bash
+brew tap antopolskiy/tap
+brew install antopolskiy/tap/kanban-md
+```
+
 ### Ручная установка (нет в brew)
 
 - [Xnip](https://xnipapp.com/) — скриншоты

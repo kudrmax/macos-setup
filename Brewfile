@@ -33,6 +33,10 @@ brew "python"
 # Медиа
 brew "yt-dlp"
 
+# Kanban
+tap "antopolskiy/tap"
+brew "antopolskiy/tap/kanban-md"
+
 # Утилиты
 cask "maccy"
 cask "bitwarden"
