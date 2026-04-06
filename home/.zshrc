@@ -84,6 +84,9 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 export GRADLE_USER_HOME=/Users/Shared/gradle
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
+# kanban-md — Kanban в markdown
+alias k="kanban-md"
+
 # life() — запуск Claude в проекте life-analytics через прокси
 life() {
   clear
