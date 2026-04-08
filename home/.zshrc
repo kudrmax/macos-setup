@@ -87,6 +87,13 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 # kanban-md — Kanban в markdown
 alias k="kanban-md"
 
+# anki() — запуск Anything to Anki
+anki() {
+  cd /Users/mdmkudryashov/PycharmProjects/anything-to-anki
+  make prod-up
+  echo "Anything to Anki running on http://localhost:17833/"
+}
+
 # life() — запуск Claude в проекте life-analytics через прокси
 life() {
   clear
