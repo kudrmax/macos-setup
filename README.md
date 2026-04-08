@@ -14,16 +14,106 @@ git clone https://github.com/kudrmax/macos-setup ~/macos-setup
 # 3. Oh-My-Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# 4. Установить все зависимости
-cd ~/macos-setup
-brew bundle
+# 4. Установить пакеты
+# См. раздел «Установка пакетов» ниже — копировать блоки последовательно
 
 # 5. Создать симлинки
+cd ~/macos-setup
 ./sync.sh
 ```
 
 > [!WARNING]
 > `home/.gitconfig` содержит мой email. После `sync.sh` проверьте `git config user.email`.
+
+## Установка пакетов
+
+Команды разбиты на блоки — копировать и выполнять по одному блоку.
+
+### Terminal
+
+```bash
+brew install powerlevel10k
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+brew install zsh-history-substring-search
+brew install zsh-you-should-use
+brew install fzf
+brew install atuin
+brew install zoxide
+brew install micro
+brew install --cask iterm2
+```
+
+### Современные замены CLI-утилит
+
+```bash
+brew install bat       # cat
+brew install eza       # ls
+brew install fd        # find
+brew install ripgrep   # grep
+brew install trash     # rm (в корзину)
+```
+
+### Git
+
+```bash
+brew install lazygit
+brew install git-delta
+```
+
+### Docker
+
+```bash
+brew install lazydocker
+```
+
+### Языки и рантаймы
+
+```bash
+brew install go
+brew install nvm
+brew install libpq
+brew install python
+```
+
+### Медиа
+
+```bash
+brew install yt-dlp
+```
+
+### Утилиты
+
+```bash
+brew install --cask maccy
+brew install --cask bitwarden
+brew install --cask appcleaner
+brew install --cask bettertouchtool
+brew install --cask karabiner-elements
+brew install --cask sublime-text
+```
+
+### AI
+
+```bash
+brew install --cask claude
+brew install --cask claude-code
+```
+
+### Приложения
+
+```bash
+brew install --cask google-chrome
+brew install --cask telegram
+brew install --cask iina
+brew install --cask todoist-app
+brew install --cask obsidian
+brew install --cask morgen
+brew install --cask yandex-music
+brew install --cask arc
+brew install --cask qbittorrent
+brew install --cask bruno
+```
 
 ## Ручная настройка после установки
 
@@ -85,7 +175,7 @@ git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
 
 Kanban-доска в markdown-файлах: https://github.com/antopolskiy/kanban-md
 
-Устанавливается через tap (уже прописан в Brewfile, `brew bundle` сделает автоматически):
+Устанавливается через tap:
 
 ```bash
 brew tap antopolskiy/tap
@@ -101,7 +191,6 @@ brew install antopolskiy/tap/kanban-md
 
 ```
 ~/macos-setup/
-├── Brewfile                ← все brew-зависимости
 ├── sync.sh                 ← создаёт симлинки из home/ в ~/
 ├── README.md
 ├── .gitignore
