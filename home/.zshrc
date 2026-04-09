@@ -94,6 +94,35 @@ anki() {
   echo "Anything to Anki running on http://localhost:17833/"
 }
 
+# vpn-check — проверка, что Hiddify поднят и трафик ходит через прокси
+vpn-check() {
+  local proxy="http://127.0.0.1:12334"
+  if ! curl -s -m 3 -o /dev/null -x "$proxy" https://www.google.com; then
+    echo "FAIL: Hiddify недоступен на 127.0.0.1:12334 (не запущен или порт другой)"
+    return 1
+  fi
+  local ip
+  ip=$(curl -s -m 5 -x "$proxy" https://api.ipify.org)
+  echo "OK: VPN работает, внешний IP через прокси: ${ip:-unknown}"
+}
+
+# vpn-on — активировать Hiddify-прокси в текущем терминале (скопируй в новый шелл при необходимости):
+#   export http_proxy="http://127.0.0.1:12334"
+#   export https_proxy="http://127.0.0.1:12334"
+#   export all_proxy="socks5://127.0.0.1:12334"
+vpn-on() {
+  export http_proxy="http://127.0.0.1:12334"
+  export https_proxy="http://127.0.0.1:12334"
+  export all_proxy="socks5://127.0.0.1:12334"
+  echo "VPN-прокси активирован в этом шелле (http/https/all → 127.0.0.1:12334)"
+}
+
+# vpn-off — снять прокси в текущем терминале
+vpn-off() {
+  unset http_proxy https_proxy all_proxy
+  echo "VPN-прокси снят"
+}
+
 # life() — запуск Claude в проекте life-analytics через прокси
 life() {
   clear
