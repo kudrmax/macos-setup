@@ -2,117 +2,143 @@
 
 Конфиги и инструкции для настройки macOS с нуля. Конфиги хранятся в `home/` и симлинкаются в `~/` скриптом `sync.sh`.
 
+> [!IMPORTANT]
+> Если `brew install` падает или зависает на каких-то пакетах (особенно cask) — скорее всего, нужен VPN. Часть ресурсов, с которых brew качает бинари, заблокирована в РФ. Поэтому **Hiddify ставим в первую очередь** (шаг 2), и только потом всё остальное.
+
 ## Быстрый старт
 
+Порядок важен: сначала **критический минимум** (без которого нельзя работать вообще), потом **VPN** (без него не стянуть остальное и не запустить Claude Code), потом **всё остальное**.
+
+### 1. Критический минимум
+
+Без этого невозможно продолжить: Homebrew, репо с конфигами, терминал, браузер, мессенджер, Claude Code.
+
 ```bash
-# 1. Установить Homebrew
+# 1.1 Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# 2. Склонировать репо
+# 1.2 Склонировать репо
 git clone https://github.com/kudrmax/macos-setup ~/macos-setup
 
-# 3. Oh-My-Zsh
+# 1.3 Минимальный набор приложений
+brew install --cask iterm2 google-chrome telegram claude-code
+```
+
+Если что-то из шага 1.3 не ставится — переходи к шагу 2 (VPN), затем вернись и повтори.
+
+### 2. VPN и прокси (обязательно до всего остального)
+
+Без VPN часть API и ресурсов (включая Claude) недоступна. Ставим Hiddify, импортируем профиль, включаем локальный прокси.
+
+1. Скачать `Hiddify-MacOS.dmg` со страницы [releases](https://github.com/hiddify/hiddify-app/releases/latest) → перетащить в `Applications`.
+   При первом запуске: System Settings → Privacy & Security → Open Anyway (приложение не нотаризовано).
+2. Импортировать профиль провайдера (ссылка `hiddify://...` или подписка) и включить подключение.
+3. Убедиться, что Hiddify слушает прокси на порту `12334`.
+   Этот порт по умолчанию, трогать настройки обычно не нужно. Проверить можно в настройках Hiddify в поле с названием типа «Mixed port» / «Порт прокси» — там должно быть `12334`.
+   Если порт другой — либо поменяй его в Hiddify на `12334`, либо поправь значение в функции `cl()` (`home/.zshrc:108`).
+4. Claude Code запускать **только через команду `cl`** (не через `claude`).
+   `cl` — это функция из `home/.zshrc`, которая перед запуском `claude` прокидывает трафик через Hiddify (`127.0.0.1:12334`). Без неё Claude Code не сможет достучаться до API из РФ.
+   Команда появится в шелле после шага 3 ниже (`sync.sh` + перезапуск терминала).
+
+### 3. Oh-My-Zsh и симлинки
+
+```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# 4. Установить пакеты
-# См. раздел «Установка пакетов» ниже — копировать блоки последовательно
-
-# 5. Создать симлинки
-cd ~/macos-setup
-./sync.sh
+cd ~/macos-setup && ./sync.sh
 ```
 
 > [!WARNING]
 > `home/.gitconfig` содержит мой email. После `sync.sh` проверьте `git config user.email`.
 
+### 4. Полная установка пакетов
+
+См. раздел «[Установка пакетов](#установка-пакетов)» ниже — одним блоком, копируется целиком.
+
+### 5. Ручная настройка
+
+См. «[Ручная настройка после установки](#ручная-настройка-после-установки)».
+
 ## Установка пакетов
 
-Команды разбиты на блоки — копировать и выполнять по одному блоку.
-
-### Terminal
+Весь список — одним блоком, разбит комментариями по категориям. Если какой-то `brew install` упал — блок можно безопасно перезапустить, brew пропустит уже установленные.
 
 ```bash
-brew install powerlevel10k
-brew install zsh-autosuggestions
-brew install zsh-syntax-highlighting
-brew install zsh-history-substring-search
-brew install zsh-you-should-use
-brew install fzf
-brew install atuin
-brew install zoxide
-brew install micro
+# === Terminal ===
+brew install powerlevel10k zsh-autosuggestions zsh-syntax-highlighting \
+  zsh-history-substring-search zsh-you-should-use fzf atuin zoxide micro
 brew install --cask iterm2
-```
 
-### Современные замены CLI-утилит
-
-```bash
+# === Современные замены CLI-утилит ===
 brew install bat       # cat
 brew install eza       # ls
 brew install fd        # find
 brew install ripgrep   # grep
 brew install trash     # rm (в корзину)
-```
 
-### Git
+# === Git ===
+brew install lazygit git-delta
 
-```bash
-brew install lazygit
-brew install git-delta
-```
-
-### Docker
-
-```bash
+# === Docker ===
 brew install lazydocker
-```
 
-### Языки и рантаймы
+# === Языки и рантаймы ===
+brew install go nvm libpq python
 
-```bash
-brew install go
-brew install nvm
-brew install libpq
-brew install python
-```
-
-### Медиа
-
-```bash
+# === Медиа ===
 brew install yt-dlp
+
+# === Утилиты ===
+brew install --cask maccy bitwarden appcleaner bettertouchtool \
+  karabiner-elements sublime-text
+
+# === AI ===
+brew install --cask claude claude-code
+
+# === Приложения ===
+brew install --cask google-chrome telegram iina todoist-app obsidian \
+  morgen yandex-music arc qbittorrent bruno
 ```
 
-### Утилиты
+> [!NOTE]
+> На рабочей машине с avito brew-прокси (`HOMEBREW_BOTTLE_DOMAIN` и т.п.) — если прокси резолвится, но brew всё равно падает вне корп-сети, запусти команды с пустыми значениями:
+> `HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew install ...`
+> НЕ делать `unset` — переменные нужны в `.zprofile` внутри корп-сети.
+
+### Проверка установленных пакетов
+
+Скрипт ниже печатает, каких пакетов из требуемого набора не хватает. Копируется и запускается целиком:
 
 ```bash
-brew install --cask maccy
-brew install --cask bitwarden
-brew install --cask appcleaner
-brew install --cask bettertouchtool
-brew install --cask karabiner-elements
-brew install --cask sublime-text
-```
+FORMULAE=(
+  powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
+  zsh-history-substring-search zsh-you-should-use fzf atuin zoxide micro
+  bat eza fd ripgrep trash
+  lazygit git-delta lazydocker
+  go nvm libpq python
+  yt-dlp
+)
+CASKS=(
+  iterm2
+  maccy bitwarden appcleaner bettertouchtool karabiner-elements sublime-text
+  claude claude-code
+  google-chrome telegram iina todoist-app obsidian morgen yandex-music arc qbittorrent bruno
+)
 
-### AI
+missing_formulae=()
+missing_casks=()
+for f in "${FORMULAE[@]}"; do
+  brew list --formula "$f" &>/dev/null || missing_formulae+=("$f")
+done
+for c in "${CASKS[@]}"; do
+  brew list --cask "$c" &>/dev/null || missing_casks+=("$c")
+done
 
-```bash
-brew install --cask claude
-brew install --cask claude-code
-```
-
-### Приложения
-
-```bash
-brew install --cask google-chrome
-brew install --cask telegram
-brew install --cask iina
-brew install --cask todoist-app
-brew install --cask obsidian
-brew install --cask morgen
-brew install --cask yandex-music
-brew install --cask arc
-brew install --cask qbittorrent
-brew install --cask bruno
+if (( ${#missing_formulae[@]} == 0 && ${#missing_casks[@]} == 0 )); then
+  echo "✓ Все пакеты установлены"
+else
+  (( ${#missing_formulae[@]} )) && echo "✗ Не хватает формул: ${missing_formulae[*]}"
+  (( ${#missing_casks[@]} ))    && echo "✗ Не хватает cask:    ${missing_casks[*]}"
+fi
 ```
 
 ## Ручная настройка после установки
@@ -161,8 +187,17 @@ git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
 
 ### VPN
 
-- [Hiddify](https://github.com/hiddify/hiddify-app/releases/latest) — клиент для прокси-протоколов (Xray, Sing-box)
-- [v2RayTun](https://apps.apple.com/app/v2raytun/id1533764921) — V2Ray клиент
+#### Hiddify
+
+Клиент для прокси-протоколов (Xray, Sing-box). В brew отсутствует — апстрим не подписывает бинари ([issue #1724](https://github.com/hiddify/hiddify-app/issues/1724)).
+
+1. Скачать `Hiddify-MacOS.dmg` со страницы [releases](https://github.com/hiddify/hiddify-app/releases/latest)
+2. Открыть `.dmg`, перетащить `Hiddify` в `Applications`
+3. При первом запуске: System Settings → Privacy & Security → Open Anyway (приложение не нотаризовано)
+
+#### v2RayTun
+
+V2Ray клиент. Только App Store: [v2RayTun](https://apps.apple.com/app/v2raytun/id1533764921).
 
 ### Chrome расширения
 
