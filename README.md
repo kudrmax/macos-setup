@@ -92,6 +92,7 @@ brew install eza       # ls
 brew install fd        # find
 brew install ripgrep   # grep
 brew install trash     # rm (в корзину)
+brew install jq        # JSON парсинг
 
 # === Git ===
 brew install lazygit git-delta
@@ -130,7 +131,7 @@ brew install --cask google-chrome telegram iina todoist-app obsidian \
 FORMULAE=(
   powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
   zsh-history-substring-search zsh-you-should-use fzf atuin zoxide micro
-  bat eza fd ripgrep trash
+  bat eza fd ripgrep trash jq
   lazygit git-delta lazydocker
   go nvm libpq python
   yt-dlp
