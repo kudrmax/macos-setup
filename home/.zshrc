@@ -87,11 +87,14 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 # kanban-md — Kanban в markdown
 alias k="kanban-md"
 
-# anki() — запуск Anything to Anki
-anki() {
+# Anything to Anki — две физически изолированные рабочие копии.
+# anki-dev — перейти в dev-копию (для разработки).
+# anki-run — перейти в prod-копию и запустить (реальное использование).
+anki-dev() {
   cd /Users/mdmkudryashov/PycharmProjects/anything-to-anki
-  make prod-up
-  echo "Anything to Anki running on http://localhost:17833/"
+}
+anki-run() {
+  cd /Users/mdmkudryashov/Applications/anything-to-anki-prod && make up
 }
 
 # vpn-check — проверка, что Hiddify поднят и трафик ходит через прокси

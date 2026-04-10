@@ -30,6 +30,8 @@ brew install --cask iterm2 google-chrome telegram claude-code
 
 Без VPN часть API и ресурсов (включая Claude) недоступна. Ставим Hiddify, импортируем профиль, включаем локальный прокси.
 
+Hiddify — клиент для прокси-протоколов (Xray, Sing-box). В brew отсутствует — апстрим не подписывает бинари ([issue #1724](https://github.com/hiddify/hiddify-app/issues/1724)). Запасной вариант: [v2RayTun](https://apps.apple.com/app/v2raytun/id1533764921) (только App Store).
+
 1. Скачать `Hiddify-MacOS.dmg` со страницы [releases](https://github.com/hiddify/hiddify-app/releases/latest) → перетащить в `Applications`.
    При первом запуске: System Settings → Privacy & Security → Open Anyway (приложение не нотаризовано).
 2. Импортировать профиль провайдера (ссылка `hiddify://...` или подписка) и включить подключение.
@@ -203,20 +205,6 @@ git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
 ```
 
 Коллекции запросов хранятся в отдельном приватном репо. После клонирования Bruno подхватит их автоматически (путь прописан в `preferences.json`).
-
-### VPN
-
-#### Hiddify
-
-Клиент для прокси-протоколов (Xray, Sing-box). В brew отсутствует — апстрим не подписывает бинари ([issue #1724](https://github.com/hiddify/hiddify-app/issues/1724)).
-
-1. Скачать `Hiddify-MacOS.dmg` со страницы [releases](https://github.com/hiddify/hiddify-app/releases/latest)
-2. Открыть `.dmg`, перетащить `Hiddify` в `Applications`
-3. При первом запуске: System Settings → Privacy & Security → Open Anyway (приложение не нотаризовано)
-
-#### v2RayTun
-
-V2Ray клиент. Только App Store: [v2RayTun](https://apps.apple.com/app/v2raytun/id1533764921).
 
 ### Chrome расширения
 
