@@ -22,6 +22,11 @@
 - Before `pip install`, ensure a venv is active; if not — create and activate it first
 - Use `python -m venv .venv && source .venv/bin/activate` (or the existing .venv if present)
 
+## Удаление файлов
+- Удалять файлы и директории **только** через утилиту `trash` (переносит в корзину macOS, откуда можно восстановить)
+- **НИКОГДА** не использовать `rm`, `rm -rf`, `rm -f`, `unlink`, `shutil.rmtree`, `os.remove` и т.п.
+- Перед удалением чего-либо — **всегда** `trash`, даже если кажется что файл мусорный
+
 ## Bugs & Broken Tests
 - If you discover bugs or broken tests during your work — always report them to the user immediately
 - Never skip or deselect broken tests — fix them. Main task first, then fix found bugs right after
