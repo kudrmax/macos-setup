@@ -225,6 +225,55 @@ V2Ray клиент. Только App Store: [v2RayTun](https://apps.apple.com/ap
 - [AdBlock](https://chromewebstore.google.com/detail/adblock-%E2%80%94-block-ads-acros/gighmmpiobklfepjocnamgkkbiglidom)
 - [SponsorBlock](https://chromewebstore.google.com/detail/sponsorblock-for-youtube/mnjggcdmjocbbbhaepdhchncahnbgone)
 
+### Сон и экран
+
+System Settings → **Battery** → **Options** → **Prevent automatic sleeping on power adapter when the display is off** → **On**
+
+На зарядке мак не уходит в сон, даже если экран погас. Долгие задачи (сборки, загрузки, ssh-сессии, docker-контейнеры) не прерываются. На батарее не действует — там мак всё равно уснёт по таймеру (`Lock Screen → Turn display off on battery when inactive`), отключить это через GUI нельзя.
+
+### Docker без Docker Desktop (опционально)
+
+Если нужен `docker` в терминале, но не хочется ставить Docker Desktop (Electron-GUI, ~2 GB на диске, 1–2 GB RAM в простое, лицензия для компаний) — ставим **colima**. Это лёгкая Lima VM с docker-демоном внутри: бинарники ~200 MB, RAM только пока VM запущена, GUI нет.
+
+```bash
+brew install docker docker-compose colima
+mkdir -p ~/.docker/cli-plugins
+ln -sfn /opt/homebrew/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+```
+
+- `docker` — только CLI-клиент (без Desktop)
+- `docker-compose` — плагин compose v2 (вызывается как `docker compose`)
+- `colima` — VM с docker-демоном
+
+> Симлинк обязателен: brew ставит `docker-compose` отдельным бинарником и не регистрирует его как Docker CLI plugin. Без симлинка `docker compose ...` падает с `unknown shorthand flag`, потому что docker не видит подкоманду `compose` и парсит флаги сам. Проверить: `docker compose version` должен вернуть версию.
+
+Запуск (по умолчанию 2 CPU / 2 GB RAM, можно задать сразу):
+
+```bash
+colima start --cpu 4 --memory 8 --disk 60
+```
+
+Проверка:
+
+```bash
+docker context ls    # должен быть активен colima
+docker run hello-world
+```
+
+Управление:
+
+```bash
+colima stop      # остановить VM (RAM освобождается полностью)
+colima status
+colima delete    # снести
+```
+
+Автостарт при логине (опционально):
+
+```bash
+brew services start colima
+```
+
 ### kanban-md
 
 Kanban-доска в markdown-файлах: https://github.com/antopolskiy/kanban-md
