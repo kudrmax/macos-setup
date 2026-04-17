@@ -38,7 +38,6 @@
     ],
     "defaultMode": "default"
   },
-  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -76,6 +75,6 @@
     }
   },
   "language": "Русский",
-  "effortLevel": "medium",
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "skipDangerousModePermissionPrompt": true
 }
