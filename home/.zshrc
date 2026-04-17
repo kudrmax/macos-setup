@@ -43,10 +43,6 @@ source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 source $BREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh
 
-# zoxide — умная навигация по директориям (замена z)
-eval "$(zoxide init zsh)"
-alias cd="z"
-
 # fzf — нечёткий поиск (Ctrl+T файлы, Cmd+Shift+R история)
 eval "$(fzf --zsh)"
 bindkey -r '^R'  # убираем Ctrl+R у fzf, отдаём atuin
@@ -149,6 +145,11 @@ cl() {
 clb() {
   cl --dangerously-skip-permissions "$@"
 }
+
+# zoxide — умная навигация по директориям (замена z)
+# Инициализация в конце файла — требование zoxide
+eval "$(zoxide init zsh)"
+alias cd="z"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
