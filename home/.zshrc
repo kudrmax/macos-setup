@@ -122,29 +122,47 @@ vpn-off() {
   echo "VPN-прокси снят"
 }
 
-# life() — запуск Claude в проекте life-analytics через прокси
-life() {
+# --- Прокси-конфигурация для Claude ---
+# Hiddify: локальный прокси, нужен когда V2RayTUN выключен
+# no_proxy: .avito.ru идёт напрямую (через Tunnelblick, если подключён)
+HIDDIFY_PORT=12334
+HIDDIFY_PROXY="http://127.0.0.1:$HIDDIFY_PORT"
+HIDDIFY_SOCKS="socks5://127.0.0.1:$HIDDIFY_PORT"
+PROXY_BYPASS="localhost,127.0.0.1,.avito.ru"
+
+# clp — Claude через Hiddify прокси (личный/рабочий ноут)
+# Требует: Hiddify запущен. Опционально: Tunnelblick для доступа к .avito.ru
+clp() {
   clear
-  cd ~/PycharmProjects/life-analytics
-  export http_proxy="http://127.0.0.1:12334"
-  export https_proxy="http://127.0.0.1:12334"
-  export all_proxy="socks5://127.0.0.1:12334"
+  export http_proxy="$HIDDIFY_PROXY"
+  export https_proxy="$HIDDIFY_PROXY"
+  export all_proxy="$HIDDIFY_SOCKS"
+  export no_proxy="$PROXY_BYPASS"
+  export NO_PROXY="$PROXY_BYPASS"
   claude "$@"
 }
 
-# cl() — запуск Claude через прокси из текущей директории
+# clv — Claude через V2RayTUN (весь трафик идёт через системный TUN-интерфейс)
+# Требует: V2RayTUN активен. Прокси-переменные не нужны и могут мешать.
+clv() {
+  clear
+  unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY no_proxy NO_PROXY
+  claude "$@"
+}
+
+# bypass-версии (без подтверждений на каждое действие)
+clpb() { clp --dangerously-skip-permissions "$@"; }
+clvb() { clv --dangerously-skip-permissions "$@"; }
+
+# cl/clb — автодетект: Hiddify слушает на порту → clp, иначе → clv
 cl() {
-  clear
-  export http_proxy="http://127.0.0.1:12334"
-  export https_proxy="http://127.0.0.1:12334"
-  export all_proxy="socks5://127.0.0.1:12334"
-  claude "$@"
+  if nc -z -w1 127.0.0.1 "$HIDDIFY_PORT" 2>/dev/null; then
+    clp "$@"
+  else
+    clv "$@"
+  fi
 }
-
-# clb() — cl + bypass permissions
-clb() {
-  cl --dangerously-skip-permissions "$@"
-}
+clb() { cl --dangerously-skip-permissions "$@"; }
 
 # restart-avito-docker — перезапуск Lima VM для Avito Docker (без VPN)
 restart-avito-docker() {
