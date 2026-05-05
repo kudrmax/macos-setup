@@ -169,10 +169,11 @@ restart-avito-docker() {
   limactl stop avito && limactl start avito
 }
 
+# iTerm2 shell integration
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+
 # zoxide — умная навигация по директориям (замена z)
-# Инициализация в конце файла — требование zoxide
+# MUST be last — _ZO_DOCTOR предупредит если что-то окажется ниже
 eval "$(zoxide init zsh)"
 alias cd="z"
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
