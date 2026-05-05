@@ -31,7 +31,6 @@
 			"codeFontSize": 13
 		},
 		"proxy": {
-			"inherit": false,
 			"config": {
 				"protocol": "http",
 				"hostname": "",
@@ -43,7 +42,8 @@
 				},
 				"bypassProxy": ""
 			},
-			"disabled": true
+			"disabled": true,
+			"source": "manual"
 		},
 		"features": {
 			"terminal": true,
@@ -105,5 +105,7 @@
 		"_migrations": {
 			"codeFontSize14to13": true
 		}
-	}
+	},
+	"themeMode": "dark",
+	"themeBg": "#1a1a1a"
 }
