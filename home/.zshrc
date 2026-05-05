@@ -146,6 +146,11 @@ clb() {
   cl --dangerously-skip-permissions "$@"
 }
 
+# restart-avito-docker — перезапуск Lima VM для Avito Docker (без VPN)
+restart-avito-docker() {
+  limactl stop avito && limactl start avito
+}
+
 # zoxide — умная навигация по директориям (замена z)
 # Инициализация в конце файла — требование zoxide
 eval "$(zoxide init zsh)"

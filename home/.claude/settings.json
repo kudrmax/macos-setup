@@ -64,7 +64,9 @@
     "clangd-lsp@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "paas@avito-skills": true,
+    "experimental@avito-skills": true
   },
   "extraKnownMarketplaces": {
     "ui-ux-pro-max-skill": {
@@ -72,9 +74,16 @@
         "source": "github",
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
+    },
+    "avito-skills": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/mdmkudryashov/.claude/plugins/marketplaces/avito-skills"
+      }
     }
   },
   "language": "Русский",
+  "effortLevel": "medium",
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true
 }
