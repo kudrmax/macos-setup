@@ -122,6 +122,26 @@ vpn-off() {
   echo "VPN-прокси снят"
 }
 
+# --- Проверка геолокации ---
+# Проверяет что выходной IP не в России (Claude заблокирован в RU)
+# Возвращает 0 если НЕ Россия, 1 если Россия или ошибка проверки
+check_location() {
+  local country
+  country=$(curl -s --max-time 5 https://ipinfo.io/country 2>/dev/null | tr -d '[:space:]')
+
+  if [[ -z "$country" ]]; then
+    echo "⚠️  Не удалось определить геолокацию (нет интернета?)"
+    return 1
+  fi
+
+  if [[ "$country" == "RU" ]]; then
+    echo "🚫 Выходной IP в России ($country). Включи VPN/прокси."
+    return 1
+  fi
+
+  return 0
+}
+
 # --- Прокси-конфигурация для Claude ---
 # Hiddify: локальный прокси, нужен когда V2RayTUN выключен
 # no_proxy: .avito.ru идёт напрямую (через Tunnelblick, если подключён)
@@ -139,6 +159,7 @@ clp() {
   export all_proxy="$HIDDIFY_SOCKS"
   export no_proxy="$PROXY_BYPASS"
   export NO_PROXY="$PROXY_BYPASS"
+  check_location || return 1
   claude "$@"
 }
 
@@ -147,6 +168,7 @@ clp() {
 clv() {
   clear
   unset http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY no_proxy NO_PROXY
+  check_location || return 1
   claude "$@"
 }
 
