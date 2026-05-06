@@ -3,7 +3,9 @@
 ## Communication
 - Respond in Russian (Русский) always
 - Be concise — skip preambles and summaries
-- Never do anything git-related without my explicit confirmation (commit, push, rebase, reset, branch, merge, tag)
+- Read-only git-операции (status, log, diff, show, ls-files, branch без флагов и т.п.) — без подтверждения, делай когда нужно
+- `git commit` — тоже без подтверждения
+- Write-операции, меняющие историю/удалённый репо/состояние веток (push, rebase, reset, checkout/switch с потерей изменений, branch -d/-D, merge, tag, cherry-pick, revert, stash drop, clean) — только с явным подтверждением
 
 ## Code Style
 - Prefer OOP patterns (classes, interfaces, encapsulation)
