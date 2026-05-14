@@ -195,7 +195,10 @@ restart-avito-docker() {
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
 # zoxide — умная навигация по директориям (замена z)
-# MUST be last — _ZO_DOCTOR предупредит если что-то окажется ниже
+# _ZO_DOCTOR=0 — отключаем проверку «init должен быть в самом конце»:
+# инсталляторы (pipx/uv/pip --user и т.п.) постоянно дописывают строки ниже
+export _ZO_DOCTOR=0
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+export PATH="/Users/mdmkudryashov/.local/bin:$PATH"
