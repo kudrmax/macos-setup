@@ -84,6 +84,9 @@
   },
   "language": "Русский",
   "effortLevel": "medium",
+  "skipDangerousModePermissionPrompt": true,
   "voiceEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "verbose": true,
+  "preferredNotifChannel": "terminal_bell",
+  "remoteControlAtStartup": false
 }
