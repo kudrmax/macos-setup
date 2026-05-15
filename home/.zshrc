@@ -25,8 +25,13 @@ brew() {
   HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" command brew "$@"
 }
 
-# avito — запуск без внешнего VPN
+# avito — запуск без внешнего VPN, через avito-rtk (token-optimized прокси)
 avito() {
+  http_proxy="" https_proxy="" all_proxy="" command avito-rtk "$@"
+}
+
+# avito-full — оригинальный avito CLI без фильтрации вывода
+avito-full() {
   http_proxy="" https_proxy="" all_proxy="" command avito "$@"
 }
 
