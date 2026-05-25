@@ -30,8 +30,8 @@ avito() {
   http_proxy="" https_proxy="" all_proxy="" command avito-rtk "$@"
 }
 
-# avito-full — оригинальный avito CLI без фильтрации вывода
-avito-full() {
+# avito_ — оригинальный avito CLI без фильтрации вывода
+avito_() {
   http_proxy="" https_proxy="" all_proxy="" command avito "$@"
 }
 
