@@ -36,7 +36,7 @@
       "Bash(brew info:*)",
       "Bash(brew search:*)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "hooks": {
     "PreToolUse": [
@@ -83,10 +83,16 @@
     }
   },
   "language": "Русский",
+  "effortLevel": "high",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "editorMode": "normal",
   "verbose": true,
   "preferredNotifChannel": "terminal_bell",
+  "terminalProgressBarEnabled": true,
   "remoteControlAtStartup": false,
-  "voiceEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
