@@ -207,3 +207,5 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 
 export PATH="/Users/mdmkudryashov/.local/bin:$PATH"
+
+export PATH="$PATH:/Users/maxos/Library/TinyTeX/bin/universal-darwin"
