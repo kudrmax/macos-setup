@@ -10,6 +10,7 @@
 	dog = log --oneline --graph
 [core]
 	pager = delta
+	editor = true
 [interactive]
 	diffFilter = delta --color-only
 [delta]

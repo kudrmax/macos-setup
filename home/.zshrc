@@ -199,3 +199,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+
+# TinyTeX
+export PATH="$PATH:/Users/maxos/Library/TinyTeX/bin/universal-darwin"
