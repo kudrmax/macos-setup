@@ -103,7 +103,11 @@ Write digests in **the same language as the book** by default — detect it from
 the extracted chapter text, not from the title. A Russian book → Russian
 digests; an English book → English digests; a German book → German. Only switch
 languages if the user explicitly asks for another (then honor that request over
-the book's language). The template below is shown with Russian labels as an
+the book's language). **Apply this silently — never ask the user which language
+to use.** The user's chat language is irrelevant to the digest language: a
+Russian-speaking user reading an English book still gets **English** digests by
+default. Deviate only if the user, unprompted, already named a specific digest
+language — otherwise just detect the book's language and write. The template below is shown with Russian labels as an
 example — render those labels («Суть одной фразой», «Ключевые тезисы», «Что
 можно применить», «Вердикт») in the digest's language too, so an English digest
 uses English headings and an English verdict line. Use this exact template per

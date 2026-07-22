@@ -34,7 +34,11 @@ must pick up the change automatically — which only works if you delegate inste
 of duplicating. (Locate it at `/mnt/skills/user/book-chapter-digest`; if it's
 moved, find it by name.) That inheritance includes the **output language**:
 digests default to the book's own language — a Russian book → Russian, an English
-book → English — unless the user explicitly asks for another.
+book → English — unless the user explicitly asks for another. **Apply this
+silently — never ask which language to use.** The user's chat language is
+irrelevant: a Russian-speaking user embedding digests into an English book still
+gets **English** digests by default. Deviate only if the user, unprompted,
+already named a specific digest language.
 
 This skill is **EPUB-only** (injection needs the zip/XHTML structure). For other
 formats, tell the user it only embeds into `.epub`.

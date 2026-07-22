@@ -179,7 +179,11 @@ what the book is about, its central model/thesis, and the target language and
 tone. **Default the language to the book's own language** — detect it from the
 extracted framing text (a Russian book → Russian digests, an English book →
 English) — unless the user explicitly asked for another; pass this decision to
-every worker so the whole book comes out in one language. This is cheap in context and is what stops each worker from summarizing its
+every worker so the whole book comes out in one language. **Decide this silently
+— never ask the user which language to use.** The user's chat language is
+irrelevant to the digest language: a Russian-speaking user embedding digests into
+an English book still gets **English** digests by default. Deviate only if the
+user, unprompted, already named a specific digest language. This is cheap in context and is what stops each worker from summarizing its
 chapters blind. Do **not** read every chapter here — that would defeat the point.
 
 **5·O.b — Cut the units into batches, along the book's own seams.**
