@@ -32,7 +32,9 @@ follow it verbatim** to write the digest. Do **not** restate, paraphrase, or
 re-invent its template here. If that skill's format changes later, this skill
 must pick up the change automatically — which only works if you delegate instead
 of duplicating. (Locate it at `/mnt/skills/user/book-chapter-digest`; if it's
-moved, find it by name.)
+moved, find it by name.) That inheritance includes the **output language**:
+digests default to the book's own language — a Russian book → Russian, an English
+book → English — unless the user explicitly asks for another.
 
 This skill is **EPUB-only** (injection needs the zip/XHTML structure). For other
 formats, tell the user it only embeds into `.epub`.

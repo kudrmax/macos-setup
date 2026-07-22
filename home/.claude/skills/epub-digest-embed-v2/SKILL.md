@@ -176,7 +176,10 @@ Read *only* the framing sections — the Introduction / Preface and the
 Conclusion / Epilogue (extract them with `extract_chapter.py`) — plus the chapter
 titles from the index. From those, write a compact brief (a few sentences):
 what the book is about, its central model/thesis, and the target language and
-tone. This is cheap in context and is what stops each worker from summarizing its
+tone. **Default the language to the book's own language** — detect it from the
+extracted framing text (a Russian book → Russian digests, an English book →
+English) — unless the user explicitly asked for another; pass this decision to
+every worker so the whole book comes out in one language. This is cheap in context and is what stops each worker from summarizing its
 chapters blind. Do **not** read every chapter here — that would defeat the point.
 
 **5·O.b — Cut the units into batches, along the book's own seams.**

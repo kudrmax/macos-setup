@@ -97,10 +97,17 @@ The user jumps around and that's expected. Support it smoothly:
 - **Vague reference** ("ту главу про дисциплину") — use `--title` or scan the
   index titles; if genuinely ambiguous, show the candidate chapters and ask which.
 
-## Output format (Russian by default)
+## Output format (defaults to the book's own language)
 
-Write digests in **Russian** unless the user asks otherwise. Use this exact
-template per chapter.
+Write digests in **the same language as the book** by default — detect it from
+the extracted chapter text, not from the title. A Russian book → Russian
+digests; an English book → English digests; a German book → German. Only switch
+languages if the user explicitly asks for another (then honor that request over
+the book's language). The template below is shown with Russian labels as an
+example — render those labels («Суть одной фразой», «Ключевые тезисы», «Что
+можно применить», «Вердикт») in the digest's language too, so an English digest
+uses English headings and an English verdict line. Use this exact template per
+chapter.
 
 ```
 ## Глава N — «Точное название из книги»
