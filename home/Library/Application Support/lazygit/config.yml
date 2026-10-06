@@ -1,8 +1,8 @@
 gui:
   language: 'en' # one of 'auto' | 'en' | 'zh-CN' | 'zh-TW' | 'pl' | 'nl' | 'ja' | 'ko' | 'ru'
 git:
-  pagers:
-    - pager: delta --dark --paging=never --line-numbers --side-by-side --minus-empty-line-marker-style=red
+  diffRenderers:
+    - command: delta --dark --paging=never --line-numbers --side-by-side --minus-empty-line-marker-style=red
   branchLogCmd: 'git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=oneline {{branchName}} --'
   merging:
     args: '--no-ff'

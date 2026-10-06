@@ -17,9 +17,9 @@
 	<key>AIVectorStore</key>
 	<integer>0</integer>
 	<key>AiMaxTokens</key>
-	<integer>400000</integer>
+	<integer>1050000</integer>
 	<key>AiModel</key>
-	<string>gpt-5.2</string>
+	<string>gpt-5.5</string>
 	<key>AiResponseMaxTokens</key>
 	<integer>128000</integer>
 	<key>AitermURL</key>
@@ -449,7 +449,7 @@
 			<key>HotKey Key Code</key>
 			<integer>4</integer>
 			<key>HotKey Modifier Activation</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>HotKey Modifier Flags</key>
 			<integer>1966080</integer>
 			<key>HotKey Window Animates</key>
@@ -793,7 +793,11 @@
 			<string>/Users/kudr.max</string>
 		</dict>
 	</array>
+	<key>OpenArrangementAtStartup</key>
+	<false/>
 	<key>OpenBookmark</key>
+	<false/>
+	<key>OpenNoWindowsAtStartup</key>
 	<false/>
 	<key>PointerActions</key>
 	<dict>
@@ -828,6 +832,8 @@
 			<string>kNextWindowPointerAction</string>
 		</dict>
 	</dict>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>ShowFullScreenTabBar</key>
 	<true/>
 	<key>SoundForEsc</key>

@@ -191,6 +191,17 @@ cl() {
 }
 clb() { cl --dangerously-skip-permissions "$@"; }
 
+# Codex Desktop через Hiddify
+chatgpt() {
+  osascript -e 'tell application id "com.openai.codex" to quit' >/dev/null 2>&1
+  while pgrep -f '/Applications/ChatGPT.app/Contents/MacOS/ChatGPT' >/dev/null 2>&1; do sleep 0.1; done
+  open -b com.openai.codex \
+    --env "HTTP_PROXY=$HIDDIFY_PROXY" \
+    --env "HTTPS_PROXY=$HIDDIFY_PROXY" \
+    --env "ALL_PROXY=$HIDDIFY_SOCKS" \
+    --env "NO_PROXY=$PROXY_BYPASS"
+}
+
 # restart-avito-docker — перезапуск Lima VM для Avito Docker (без VPN)
 restart-avito-docker() {
   limactl stop avito && limactl start avito
