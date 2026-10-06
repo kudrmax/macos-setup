@@ -37,7 +37,7 @@ Hiddify — клиент для прокси-протоколов (Xray, Sing-bo
 2. Импортировать профиль провайдера (ссылка `hiddify://...` или подписка) и включить подключение.
 3. Убедиться, что Hiddify слушает прокси на порту `12334`.
    Этот порт по умолчанию, трогать настройки обычно не нужно. Проверить можно в настройках Hiddify в поле с названием типа «Mixed port» / «Порт прокси» — там должно быть `12334`.
-   Если порт другой — либо поменяй его в Hiddify на `12334`, либо поправь значение в функции `cl()` (`home/.zshrc:108`).
+   Если порт другой — либо поменяй его в Hiddify на `12334`, либо поправь в `home/.zshrc` переменную `HIDDIFY_PORT` и порт в функциях `vpn-check` / `vpn-on`.
 4. Claude Code запускать **только через команду `cl`** (не через `claude`).
    `cl` — это функция из `home/.zshrc`, которая перед запуском `claude` прокидывает трафик через Hiddify (`127.0.0.1:12334`). Без неё Claude Code не сможет достучаться до API из РФ.
    Команда появится в шелле после шага 3 ниже (`sync.sh` + перезапуск терминала).
@@ -183,7 +183,7 @@ p10k configure
 
 ### iTerm2
 
-Импорт настроек: Settings → General → Settings → Import All Settings and Data... → `~/macos-setup/home/.config/iTerm2 State.itermexport`
+Ничего импортировать не нужно: `sync.sh` прописывает в iTerm2 путь к `home/.config/iterm2/` (настройка `PrefsCustomFolder`), и iTerm2 сам читает и пишет конфиг оттуда. После первого `sync.sh` перезапусти iTerm2.
 
 ### BTT (Better Touch Tool)
 
@@ -193,7 +193,7 @@ p10k configure
 
 ### Karabiner Elements
 
-Конфиг копируется автоматически через `sync.sh`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
+Karabiner ломает симлинки при записи, поэтому его папка копируется, а не линкуется: `./sync.sh` копирует из репо в `~/`, `./sync.sh pull` — обратно в репо. Если правил что-то в GUI Karabiner — перед коммитом запусти `./sync.sh pull`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
 
 ### Автообновление Homebrew
 
@@ -290,34 +290,49 @@ brew install antopolskiy/tap/kanban-md
 
 ```
 ~/macos-setup/
-├── sync.sh                 ← создаёт симлинки из home/ в ~/
+├── sync.sh                 ← репо → ~/ (симлинки, Karabiner, iTerm2); `sync.sh pull` — Karabiner обратно
 ├── README.md
+├── CLAUDE.md               ← инструкции Claude Code для работы с этим репо
 ├── .gitignore
+├── bruno/                  ← git submodule с коллекциями Bruno (приватный репо)
 └── home/                   ← зеркало ~/, конфиги хранятся здесь
-    ├── .zshrc
-    ├── .zprofile
-    ├── .p10k.zsh
+    ├── .zshrc, .zshenv, .zprofile, .p10k.zsh, .hushlogin
     ├── .gitconfig
-    ├── .claude/            ← Claude Code (инструкции, настройки, скиллы)
+    ├── .claude/            ← Claude Code: CLAUDE.md, settings.json, statusline.sh, skills/
     ├── .config/
-    │   ├── karabiner/      ← конфиг + правила
+    │   ├── karabiner/      ← конфиг + правила (копируется, не линкуется)
+    │   ├── iterm2/         ← iTerm2 читает отсюда напрямую (PrefsCustomFolder)
+    │   ├── micro/          ← биндинги редактора micro
     │   ├── mpv/            ← скрипты и конфиги для MPV
-    │   ├── btt_preset.bttpreset  ← ручной импорт
-    │   └── iTerm2 State.itermexport  ← ручной импорт
-    └── Library/Application Support/
-        ├── lazygit/config.yml
-        ├── lazydocker/config.yml
-        ├── Code/User/settings.json  ← VS Code
-        └── com.colliderli.iina/     ← IINA горячие клавиши
+    │   └── btt_preset.bttpreset  ← ручной импорт в BetterTouchTool
+    └── Library/
+        ├── Application Support/
+        │   ├── lazygit/config.yml
+        │   ├── lazydocker/config.yml
+        │   ├── bruno/preferences.json
+        │   ├── Code/User/settings.json              ← VS Code
+        │   ├── Sublime Text/Packages/User/          ← Sublime Text
+        │   └── com.colliderli.iina/                 ← IINA горячие клавиши
+        └── Preferences/org.p0deje.Maccy.plist       ← Maccy
 ```
 
 ## Как это работает
 
-`sync.sh` проходит по всем файлам в `home/` и создаёт симлинки:
+`./sync.sh` берёт список файлов из git (`git ls-files home`) и на каждый создаёт симлинк:
 - `~/.zshrc` → `~/macos-setup/home/.zshrc`
-- `~/.config/karabiner/karabiner.json` → `~/macos-setup/home/.config/karabiner/karabiner.json`
+- `~/.claude/settings.json` → `~/macos-setup/home/.claude/settings.json`
 - и т.д.
 
-Если файл уже существует — бэкапится в `.backup/`. Файлы BTT и iTerm2 пропускаются (нужен ручной импорт).
-
 После этого любые изменения конфигов сразу видны в `git status`.
+
+Исключения:
+- **Karabiner** ломает симлинки при записи, поэтому папка копируется: `./sync.sh` из репо в `~/`, `./sync.sh pull` обратно. Перед копированием содержимое папок сравнивается; если в приёмнике есть более новые или лишние файлы — скрипт печатает `CONFLICT` и ничего не трогает.
+- **iTerm2** читает конфиг прямо из `home/.config/iterm2/` — скрипт прописывает путь через `defaults write`.
+- **BTT**-пресет импортируется вручную.
+
+Защита от потери настроек:
+- Если в `~/` на месте симлинка лежит обычный файл и он отличается от репо (так бывает, когда приложение само переписало конфиг), скрипт печатает `CONFLICT` с diff и файл не трогает. Взять версию из репо: `./sync.sh --force`.
+- Заменённые файлы складываются в `.backup/<дата>/`, хранятся последние 5 снимков.
+- Симлинки на файлы, удалённые из репо, удаляются в корзину.
+- `./sync.sh --dry-run` показывает план без изменений.
+- Из git worktree скрипт не запускается: симлинки должны вести в основной чекаут.
