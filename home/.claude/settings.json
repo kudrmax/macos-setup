@@ -34,7 +34,13 @@
       "Bash(wc:*)",
       "Bash(brew list:*)",
       "Bash(brew info:*)",
-      "Bash(brew search:*)"
+      "Bash(brew search:*)",
+      "Bash(trash:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(unlink:*)",
+      "Bash(rmdir:*)"
     ],
     "defaultMode": "auto"
   },
@@ -47,11 +53,9 @@
     "context7@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {},
   "language": "Русский",
   "effortLevel": "high",
   "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "editorMode": "normal",
   "verbose": true,
@@ -61,5 +65,7 @@
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voice": {
+    "enabled": true
+  }
 }

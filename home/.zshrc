@@ -15,10 +15,25 @@ alias с="clear"
 
 # Современные замены стандартных утилит
 alias cat="bat"
-alias ls="eza --icons"
-alias ll="eza -la --icons --git"
-alias tree="eza --tree --icons"
-alias rm="trash"
+alias ls="eza --icons=auto"
+alias ll="eza -la --icons=auto --git"
+alias tree="eza --tree --icons=auto"
+
+# rm → trash. Формула brew `trash` стала keg-only и не попадает в PATH,
+# а системный /usr/bin/trash (macOS 15+) не понимает -r/-f — отбрасываем их.
+rm() {
+  local -a files
+  local arg
+  for arg in "$@"; do
+    case "$arg" in
+      -r|-f|-rf|-fr|-R|-Rf|-fR|-i|-v) ;;
+      --) ;;
+      *) files+=("$arg") ;;
+    esac
+  done
+  (( ${#files[@]} )) || { echo "rm: нет файлов" >&2; return 1; }
+  trash "${files[@]}"
+}
 
 # brew — всегда без корпоративного прокси
 brew() {
@@ -87,16 +102,6 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
 # kanban-md — Kanban в markdown
 alias k="kanban-md"
-
-# Anything to Anki — две физически изолированные рабочие копии.
-# anki-dev — перейти в dev-копию (для разработки).
-# anki-run — перейти в prod-копию и запустить (реальное использование).
-anki-dev() {
-  cd /Users/mdmkudryashov/PycharmProjects/anything-to-anki
-}
-anki-run() {
-  cd /Users/mdmkudryashov/Applications/anything-to-anki-prod && make up
-}
 
 # vpn-check — проверка, что Hiddify поднят и трафик ходит через прокси
 vpn-check() {
