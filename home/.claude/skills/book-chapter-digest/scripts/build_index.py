@@ -283,7 +283,7 @@ def parse_epub(path):
                         toc_entries.append((title, fp, anchor))
 
         # 5. Convert TOC entries to global offsets
-        marks = []  # (global_offset, title)
+        marks = []  # (global_offset, title, file, anchor)
         for title, fpart, anchor in toc_entries:
             if fpart not in file_global_start:
                 continue
@@ -291,24 +291,25 @@ def parse_epub(path):
             off = 0
             if anchor and anchor in file_ids.get(fpart, {}):
                 off = file_ids[fpart][anchor]
-            marks.append((base + off, title or "Без названия"))
+            marks.append((base + off, title or "Без названия", fpart, anchor))
 
         # dedupe + sort by position
         seen = set()
         uniq = []
-        for pos, title in sorted(marks, key=lambda x: x[0]):
+        for pos, title, fpart, anchor in sorted(marks, key=lambda x: x[0]):
             if pos in seen:
                 continue
             seen.add(pos)
-            uniq.append((pos, title))
+            uniq.append((pos, title, fpart, anchor))
 
         chapters = []
         if uniq and full_text.strip():
-            for i, (pos, title) in enumerate(uniq):
+            for i, (pos, title, fpart, anchor) in enumerate(uniq):
                 end = uniq[i + 1][0] if i + 1 < len(uniq) else len(full_text)
                 chunk = full_text[pos:end].strip()
                 if chunk:
-                    chapters.append({"title": title, "text": chunk})
+                    chapters.append({"title": title, "text": chunk,
+                                     "epub_file": fpart, "epub_anchor": anchor})
 
         # 6. Fallback: one chapter per spine file
         if not chapters:
@@ -321,7 +322,8 @@ def parse_epub(path):
                 if not text:
                     continue
                 title = _first_heading(text) or os.path.basename(f)
-                chapters.append({"title": title, "text": text})
+                chapters.append({"title": title, "text": text,
+                                 "epub_file": f, "epub_anchor": None})
 
         return chapters
 
@@ -521,14 +523,19 @@ def main():
         fname = f"chap_{i:03d}.txt"
         with open(os.path.join(cache_dir, fname), "w", encoding="utf-8") as f:
             f.write(ch["text"])
-        index["chapters"].append({
+        entry = {
             "n": i,
             "title": ch["title"],
             "file": fname,
             "words": words(ch["text"]),
             "matter": looks_like_matter(ch["title"]),
             "warning": ch.get("_warning"),
-        })
+        }
+        # in-book location (EPUB only) — needed by epub-digest-embed for injection
+        if ch.get("epub_file"):
+            entry["epub_file"] = ch["epub_file"]
+            entry["epub_anchor"] = ch.get("epub_anchor")
+        index["chapters"].append(entry)
     with open(os.path.join(cache_dir, "index.json"), "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=2)
 
