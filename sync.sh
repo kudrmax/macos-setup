@@ -154,6 +154,16 @@ link_files() {
     done < <(git -C "$REPO_DIR" ls-files -z home)
 }
 
+# Удалить пустые каталоги от $1 вверх, не выходя за $2 (только rmdir, без удаления файлов)
+remove_empty_parents() {
+    local dir="$1" stop="$2"
+    while [ "$dir" != "$stop" ] && [ -d "$dir" ] && [ -z "$(/bin/ls -A "$dir")" ]; do
+        run rmdir "$dir"
+        echo "RMDIR ${dir#$HOME_DIR/} (пустой каталог)"
+        dir="$(dirname "$dir")"
+    done
+}
+
 clean_dangling_links() {
     local root link target
     for root in "${LINK_ROOTS[@]}"; do
@@ -165,6 +175,7 @@ clean_dangling_links() {
                 "$REPO_DIR"/home/*)
                     run trash "$link"
                     echo "DEAD  ${link#$HOME_DIR/} -> ${target#$REPO_DIR/} (висячая ссылка, в корзину)"
+                    remove_empty_parents "$(dirname "$link")" "$HOME_DIR/$root"
                     ;;
             esac
         done < <(find "$HOME_DIR/$root" -maxdepth 8 -type l \
