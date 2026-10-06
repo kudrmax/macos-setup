@@ -22,3 +22,10 @@ home/.config/mpv/bookmarks.json
 home/.config/mpv/bookmarker.json
 
 /docs/superpowers/plans
+
+# Python-кэш от скриптов скиллов
+__pycache__/
+*.pyc
+
+# Claude Desktop сам пишет сюда состояние сессий и ID аккаунтов — не синхронизируется
+home/Library/Application Support/Claude/claude_desktop_config.json

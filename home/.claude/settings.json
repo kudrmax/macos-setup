@@ -38,54 +38,21 @@
     ],
     "defaultMode": "auto"
   },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash $HOME/.claude/hooks/block-git-write.sh"
-          }
-        ]
-      }
-    ]
-  },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
-    "supabase@claude-plugins-official": true,
-    "playwright@claude-plugins-official": false,
-    "frontend-design@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "clangd-lsp@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
-    "paas@avito-skills": true,
-    "experimental@avito-skills": true
+    "superpowers@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "ui-ux-pro-max-skill": {
-      "source": {
-        "source": "github",
-        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
-      }
-    },
-    "avito-skills": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/mdmkudryashov/.claude/plugins/marketplaces/avito-skills"
-      }
-    }
-  },
+  "extraKnownMarketplaces": {},
   "language": "Русский",
   "effortLevel": "high",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "editorMode": "normal",
   "verbose": true,
   "preferredNotifChannel": "terminal_bell",

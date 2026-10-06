@@ -1,57 +1,57 @@
-# Global CLAUDE.md
+## Общение
 
-> **ВАЖНО: обращайся ко мне по имени Макс в КАЖДОМ сообщении. В каждом, без исключений.**
+- Обращаться по имени **Макс** один раз за сообщение, в начале предложения.
+- Вопросы и варианты всегда нумеровать, чтобы я мог отвечать по номерам.
 
-## Communication
-- Respond in Russian (Русский) always
-- Be concise — skip preambles and summaries
-- Read-only git-операции (status, log, diff, show, ls-files, branch без флагов и т.п.) — без подтверждения, делай когда нужно
-- `git commit` — тоже без подтверждения
-- Write-операции, меняющие историю/удалённый репо/состояние веток (push, rebase, reset, checkout/switch с потерей изменений, branch -d/-D, merge, tag, cherry-pick, revert, stash drop, clean) — только с явным подтверждением
+## Код
+
+### Принципы
+- Чистый код и чистая архитектура.
+- ООП: классы, интерфейсы, инкапсуляция.
+- Комментарии писать только когда без них не обойтись. Код должен объяснять себя сам.
+- Frontend (бот, web UI, CLI) и backend строго разделены. Frontend — заменяемый слой представления, backend от него не зависит.
+
+### Тесты и баги
+
+- Каждый упавший тест — **блокер**, даже если он падал ещё до моих изменений. Сообщать о нём явно и заметно.
+- Тесты не скипать и не отключать, а чинить: неверные assert'ы, устаревшие ожидания, flaky.
+- Найденный баг сразу показывать пользователю. Порядок работы: сначала основная задача, затем исправление найденного.
+
+### Интеграция с Claude
+- Использовать `claude-agent-sdk`, а не `anthropic` SDK — он авторизуется через Claude Code CLI и не требует API-ключа.
+
+## Git
+
+- Работать в ветках, не в master.
+- Перед началом работы подтягивать актуальный master.
+- Коммиты, создание веток и push делать без подтверждения. Force push — с подтверждением.
+
+## Окружение (macOS)
+
+### Удаление файлов
+- Удалять только через `trash`, чтобы файлы можно было восстановить из корзины. Это касается любых файлов, в том числе явно мусорных.
+- **Запрещено:** `rm`, `rm -rf`, `unlink`, `shutil.rmtree`, `os.remove` и аналоги.
+
+### Python
+- Зависимости ставить только в venv, глобально — никогда. Если `.venv` уже есть, использовать его, иначе создать venv
 
 ## Работа в Авито
-- **Если не получается достучаться до Авито (MCP, сервисы, ресурсы) — НЕ искать обходные пути.** Сбой означает, что что-то отвалилось, и починить это должен пользователь. Остановись и сообщи. Возможные причины:
-  - MCP нужно перелогинить — делает пользователь
-  - Отвалился корпоративный VPN — поднимает пользователь
-- **Задачи Jira читать строго через Jira MCP.** Если MCP недоступен — НЕ искать обходные пути (web, API напрямую и т.п.), а сообщить пользователю.
 
-## Code Style
-- Prefer OOP patterns (classes, interfaces, encapsulation)
-- Primary languages: Python, Go
-- Always use strict typing:
-  - Python: type hints everywhere, use `mypy --strict` compatible code
-  - Go: leverage the type system fully, no `interface{}` / `any` without justification
-- Prefer `dataclasses` or `pydantic` models in Python over plain dicts
-- Use named constants over magic numbers
-- Prefer composition over inheritance
-- For Claude AI integration: use claude-agent-sdk (not anthropic SDK) — it authenticates via Claude Code CLI without requiring an API key
-- Always strictly separate frontend and backend — frontend (bot, web UI, CLI) is a replaceable presentation layer, backend logic must never depend on a specific frontend
+### Доступ к ресурсам
+- Для Confluence, Jira, docs, PaaS и config у тебя есть MCP
+- Большинство инструментов доступны через mcp-hub. Если ты видишь что авторизация не прошла, это не повод останаливаться – попробуй сделать реальный запрос, скорее всего все получится.
+- Если MCP, сервис или ресурс недоступен, **остановиться и сообщить**. Обходные пути (браузер, прямой API, web) не искать. Разобраться что именно отвалилось и сообщить об этом пользователю, если сам ты не можешь это починить (например пользователь забыл ключить корпоративный VPN). Если ты хочешь написать "авторизуйся в mcp-hub" значит скорее всего тебе не нужно это писать, а нужно пробовать сделать запрос еще раз. Скорее всего все и так рабоатет.
+- Полезные MCP
+	- Логи: MCP observer
+	- Админка config (кредитные планы, группы планов, роутинг): MCP config
+	- Jira задачи: MCP jira
 
-## Python Environment
-- NEVER install project dependencies globally — always use a virtual environment (venv, .venv)
-- Before `pip install`, ensure a venv is active; if not — create and activate it first
-- Use `python -m venv .venv && source .venv/bin/activate` (or the existing .venv if present)
+### Git в Авито
+- Ветка: `FMP-NNNNN-something`, коммит: `FMP-NNNNN some things`, где `FMP-NNNNN` — номер задачи. Если пользователь не сообщил номер – попросить
+- Если ты правишь коммент из PR, то после правки не нужно закрывать коммент и отвечать на него. Это я сделаю сам
+- Не нужно писать описание PR – я их сам напишу
 
-## Удаление файлов
-- Удалять файлы и директории **только** через утилиту `trash` (переносит в корзину macOS, откуда можно восстановить)
-- **НИКОГДА** не использовать `rm`, `rm -rf`, `rm -f`, `unlink`, `shutil.rmtree`, `os.remove` и т.п.
-- Перед удалением чего-либо — **всегда** `trash`, даже если кажется что файл мусорный
-
-## Bugs & Broken Tests
-- If you discover bugs or broken tests during your work — always report them to the user immediately
-- Never skip or deselect broken tests — fix them. Main task first, then fix found bugs right after
-- This applies to any test failures: incorrect assertions, outdated expectations, flaky tests — all must be fixed, not ignored
-
-## Homebrew
-- На машине настроен Avito brew-прокси (HOMEBREW_BOTTLE_DOMAIN, HOMEBREW_CORE_GIT_REMOTE, HOMEBREW_BREW_GIT_REMOTE)
-- Прокси работает только в корпоративной сети/VPN. Вне сети — зависает
-- При `brew install` передавать пустые значения для этих переменных, чтобы обойти прокси:
-  ```
-  HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew install <package>
-  ```
-- НЕ делать unset — переменные нужны в .zprofile для работы в корпоративной сети
-
-## Commits
-- Conventional format: feat:, fix:, chore:, docs:, refactor:, test:
-- Keep subject lines under 72 chars
-- Never include ticket/issue numbers unless I provide them
+### Инструменты
+- Перед коммитом прогонять `avito fmt` и `avito lint`. Других линтеров нет.
+- Тесты запускать через стандартный прогон тестов в Go. Всегда разрешено обновлять vendor через go mod vendor, go mod tidy.
+- Сервисы, скорее всего, уже склонированы в `/Users/mdmkudryashov/go/src/go.avito.ru/`, например все `installments-*`. Не забывать актуальный master подтягивать, иначе будешь работать с некорректным кодом.
