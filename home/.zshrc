@@ -219,4 +219,4 @@ alias cd="z"
 
 export PATH="/Users/mdmkudryashov/.local/bin:$PATH"
 
-export PATH="$PATH:/Users/maxos/Library/TinyTeX/bin/universal-darwin"
+[ -d "$HOME/Library/TinyTeX/bin/universal-darwin" ] && export PATH="$PATH:$HOME/Library/TinyTeX/bin/universal-darwin"
