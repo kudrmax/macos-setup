@@ -21,7 +21,7 @@ Checks:
       and a real id inside it (no dead links)
 
 Usage:
-    python verify_epub.py --epub OUT.epub --plan plan.json [--cache-dir DIR]
+    ~/.claude/skills/.venv/bin/python verify_epub.py --epub OUT.epub --plan plan.json [--cache-dir DIR]
 Exit code 0 = all good; 1 = problems (listed).
 """
 
@@ -33,8 +33,16 @@ PROBE_MIN = 18  # chars
 
 
 def plain(md):
-    """Strip markdown to plain text for probing."""
-    t = re.sub(r"[#>*_`~\-]", " ", md)
+    """Strip markdown to plain text for probing.
+
+    Inline emphasis markers are DELETED, not blanked: `**первом**:` renders to
+    `первом:` in the XHTML, so blanking would insert a space that never exists
+    in the built file and the probe would never match. Block markers (heading
+    hashes, quote carets, list bullets) only ever start a line, so they are
+    stripped there — which also keeps hyphens inside words intact.
+    """
+    t = re.sub(r"^\s*(?:#{1,6}|>|[-*+]|\d+[.)])\s+", " ", md, flags=re.M)
+    t = re.sub(r"[*_`~]", "", t)
     t = re.sub(r"\s+", " ", t)
     return t.strip()
 

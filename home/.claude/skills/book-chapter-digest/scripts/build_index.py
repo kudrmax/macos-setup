@@ -8,7 +8,7 @@ TOC, FB2 sections, PDF outline, or TXT headings), and writes the verbatim text o
 every chapter to disk. The summarizer then reads only from these cached files.
 
 Usage:
-    python build_index.py <book_file> [--cache-dir DIR]
+    ~/.claude/skills/.venv/bin/python build_index.py <book_file> [--cache-dir DIR]
 
 Output:
     Creates <cache-dir>/index.json and <cache-dir>/chap_001.txt, chap_002.txt, ...
@@ -383,7 +383,12 @@ HEADING_RE = re.compile(
 
 
 def parse_txt(path):
-    text = open(path, "r", encoding="utf-8", errors="replace").read()
+    with open(path, "r", encoding="utf-8", errors="replace") as f:
+        text = f.read()
+    return split_text_by_headings(text, os.path.basename(path))
+
+
+def split_text_by_headings(text, fallback_title):
     lines = text.splitlines()
     idxs = [i for i, ln in enumerate(lines) if HEADING_RE.match(ln)]
     chapters = []
@@ -394,7 +399,7 @@ def parse_txt(path):
             body = "\n".join(lines[start + 1:end]).strip()
             chapters.append({"title": title, "text": body})
     else:
-        chapters.append({"title": os.path.basename(path), "text": text.strip()})
+        chapters.append({"title": fallback_title, "text": text.strip()})
     return chapters
 
 
@@ -407,8 +412,10 @@ def parse_pdf(path):
         from pypdf import PdfReader
     except ImportError:
         raise ValueError(
-            "PDF support needs pypdf. Install with:\n"
-            "  pip install pypdf --break-system-packages"
+            "PDF support needs pypdf. Create the skills venv and run the script with it:\n"
+            "  python3 -m venv ~/.claude/skills/.venv && "
+            "~/.claude/skills/.venv/bin/pip install lxml markdown pypdf\n"
+            "  ~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/build_index.py <book>"
         )
     reader = PdfReader(path)
     n_pages = len(reader.pages)
@@ -442,10 +449,7 @@ def parse_pdf(path):
     else:
         # no outline: try heading detection across the whole text
         full = "\n".join(page_text)
-        tmp = "/tmp/_pdf_dump.txt"
-        open(tmp, "w", encoding="utf-8").write(full)
-        chapters = parse_txt(tmp)
-        os.remove(tmp)
+        chapters = split_text_by_headings(full, os.path.basename(path))
         if len(chapters) == 1:
             chapters[0]["_warning"] = (
                 "PDF has no bookmarks and no detectable chapter headings — "

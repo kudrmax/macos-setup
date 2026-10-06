@@ -25,10 +25,10 @@ plan.json schema (units, with `md` filled in by the caller after generation):
 }
 
 Usage:
-    python inject_digest.py --epub IN.epub --plan plan.json --out OUT.epub
+    ~/.claude/skills/.venv/bin/python inject_digest.py --epub IN.epub --plan plan.json --out OUT.epub
 """
 
-import sys, os, re, json, argparse, zipfile, shutil
+import sys, os, re, json, argparse, zipfile
 import xml.etree.ElementTree as ET
 
 try:
@@ -68,7 +68,11 @@ def _normalize_md(md_text):
 def md_to_xhtml(md_text):
     """Render digest Markdown to a well-formed XHTML fragment string."""
     if _md is None:
-        raise SystemExit("Need the 'markdown' package: pip install markdown --break-system-packages")
+        raise SystemExit(
+            "Need the 'markdown' package. Run this script with the skills venv:\n"
+            "  python3 -m venv ~/.claude/skills/.venv && "
+            "~/.claude/skills/.venv/bin/pip install lxml markdown pypdf"
+        )
     raw = _md.markdown(_normalize_md(md_text), extensions=["extra", "sane_lists"])
     # normalise into valid XHTML via lxml (self-closes void tags, escapes stray &)
     frag = LH.fragment_fromstring(raw, create_parent="div")
@@ -352,8 +356,6 @@ def patch_opf_add_digest(opf_bytes, opf_dir, digest_rel, first_content_file):
 # Rezip (mimetype first, stored)
 # --------------------------------------------------------------------------- #
 def write_epub(out_path, files, order):
-    if os.path.exists(out_path):
-        os.remove(out_path)
     zf = zipfile.ZipFile(out_path, "w")
     if "mimetype" in files:
         zf.writestr("mimetype", files["mimetype"], compress_type=zipfile.ZIP_STORED)

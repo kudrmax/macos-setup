@@ -6,9 +6,9 @@ The summarizer must call this and read its output before writing any summary.
 It never paraphrases or invents — it only echoes the cached real chapter text.
 
 Usage:
-    python extract_chapter.py <cache_dir> <selector> [selector ...]
-    python extract_chapter.py <cache_dir> --title "substring"
-    python extract_chapter.py <cache_dir> --list
+    ~/.claude/skills/.venv/bin/python extract_chapter.py <cache_dir> <selector> [selector ...]
+    ~/.claude/skills/.venv/bin/python extract_chapter.py <cache_dir> --title "substring"
+    ~/.claude/skills/.venv/bin/python extract_chapter.py <cache_dir> --list
 
 Selectors:
     5         single chapter

@@ -23,25 +23,33 @@ Usage:
 Output: one block per session, newest last. The 'id:' line is the verified
 sessionId, byte-for-byte — copy it from here, never retype.
 """
-import json, os, sys, glob, re
+import argparse, datetime, json, os, sys, glob, re
 
 HOME = os.path.expanduser("~")
 PROJECTS = os.path.join(HOME, ".claude", "projects")
 
 
+def project_slug(path):
+    # Claude Code slugifies the project path: every non-alnum char -> "-"
+    return re.sub(r"[^A-Za-z0-9]", "-", path)
+
+
 def resolve_dirs(arg):
     if arg == "all":
         return sorted(glob.glob(os.path.join(PROJECTS, "*")))
-    if os.path.isdir(arg):
-        # a project source path like /Users/x/go/... -> -Users-x-go-...
-        if os.path.isdir(os.path.join(arg, ".git")) or not arg.startswith(PROJECTS):
-            # Claude Code slugifies the project path: every non-alnum char -> "-"
-            slug = re.sub(r"[^A-Za-z0-9]", "-", arg)
-            cand = os.path.join(PROJECTS, slug)
-            if os.path.isdir(cand):
-                return [cand]
-        return [arg]
-    sys.exit(f"not a directory: {arg}")
+    if not os.path.isdir(arg):
+        sys.exit(f"error: not a directory: {arg}")
+    path = os.path.abspath(arg)
+    if os.path.commonpath([path, PROJECTS]) == PROJECTS or glob.glob(os.path.join(path, "*.jsonl")):
+        return [path]
+    cand = os.path.join(PROJECTS, project_slug(path))
+    if os.path.isdir(cand):
+        return [cand]
+    sys.exit(
+        f"error: no Claude Code sessions for project {path}\n"
+        f"  expected session dir: {cand}\n"
+        f"  pass the session dir from {PROJECTS} directly, or use 'all'"
+    )
 
 
 def text_blocks(msg):
@@ -89,13 +97,30 @@ def scan(path):
     return title, last_reply, first_ask, files
 
 
+def parse_args():
+    ap = argparse.ArgumentParser(
+        prog="index_sessions.py",
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    ap.add_argument(
+        "target",
+        help="project source dir, session dir under ~/.claude/projects, or 'all'",
+    )
+    ap.add_argument(
+        "filter",
+        nargs="?",
+        default="",
+        help="comma/space-separated tokens, OR-matched case-insensitively",
+    )
+    return ap.parse_args()
+
+
 def main():
-    if len(sys.argv) < 2:
-        sys.exit(__doc__)
-    arg = sys.argv[1]
-    toks = [t for t in sys.argv[2].lower().replace(",", " ").split()] if len(sys.argv) > 2 else []
+    args = parse_args()
+    toks = args.filter.lower().replace(",", " ").split()
     rows = []
-    for d in resolve_dirs(arg):
+    for d in resolve_dirs(args.target):
         for f in glob.glob(os.path.join(d, "*.jsonl")):
             try:
                 title, last, first, files = scan(f)
@@ -114,7 +139,6 @@ def main():
         hay = " ".join([title or "", last or "", first or "", " ".join(uniqf)]).lower()
         if toks and not any(t in hay for t in toks):
             continue
-        import datetime
         ts = datetime.datetime.fromtimestamp(mt).strftime("%Y-%m-%d %H:%M")
         print(f"id:    {sid}")
         print(f"  when:  {ts}")

@@ -16,11 +16,15 @@ Search YouTube for videos matching the user's query using `yt-dlp`.
 ## Instructions
 
 1. Parse `$ARGUMENTS`: extract the search query and optional count (last token if it's a number, otherwise default to 5, max 20).
-2. Run the following command, replacing `{query}` and `{count}`:
+2. Build the search term `ytsearch{count}:{query}` and pass it to `yt-dlp` as **one single-quoted argument after `--`**. The query is untrusted user text: never put it inside double quotes or unquoted. Inside the single quotes, replace every `'` in the query with `'\''`. Do not redirect stderr — errors like `command not found` or network failures must stay visible.
 
 ```bash
-yt-dlp "ytsearch{count}:{query}" --no-download --print "%(title)s | %(view_count)s | %(channel)s | %(duration_string)s | %(upload_date>%Y-%m-%d)s | %(webpage_url)s" 2>/dev/null
+yt-dlp --no-download --print "%(title)s | %(view_count)s | %(channel)s | %(duration_string)s | %(upload_date>%Y-%m-%d)s | %(webpage_url)s" -- 'ytsearch{count}:{query}'
 ```
+
+   Example: query `don't panic $(date)`, count 5 → `-- 'ytsearch5:don'\''t panic $(date)'`.
+
+   If `yt-dlp` is missing, tell the user to install it with `brew install yt-dlp` and stop.
 
 3. Format results as a markdown table:
 

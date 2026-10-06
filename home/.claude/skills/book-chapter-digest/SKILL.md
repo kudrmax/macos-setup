@@ -22,6 +22,19 @@ The single most important rule: **never summarize from memory, the title, or
 general knowledge about the book. Always extract the real chapter text first and
 write only from what the extraction returns.** If you can't extract it, say so.
 
+## Setup (once per machine)
+
+The scripts need `lxml`, `markdown` and `pypdf` (only `pypdf` matters here, for
+PDF). They live in a shared venv for all skills (never install them globally):
+
+```bash
+test -x ~/.claude/skills/.venv/bin/python || \
+  (python3 -m venv ~/.claude/skills/.venv && ~/.claude/skills/.venv/bin/pip install lxml markdown pypdf)
+```
+
+Always run the scripts with `~/.claude/skills/.venv/bin/python`, never with a
+bare `python`/`python3`.
+
 ## Workflow
 
 ### 1. First contact with a book — build the index (once per book)
@@ -29,17 +42,18 @@ write only from what the extraction returns.** If you can't extract it, say so.
 The user sends books in **any** format and the structure is **often imperfect** —
 a missing or useless table of contents, front/back matter mixed in with real
 chapters, one giant undivided blob, or section-divider "chapters" with almost no
-text. Treat `build_index.py` as a first pass, not ground truth. Find the file
-under `/mnt/user-data/uploads/`.
+text. Treat `build_index.py` as a first pass, not ground truth. Use the path
+the user gave (make it absolute).
 
 ```bash
-python scripts/build_index.py "<path-to-book>"
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/build_index.py "<path-to-book>"
 ```
 
 This parses the book's own structure (EPUB spine + TOC, FB2 sections, PDF
 outline, or TXT headings), writes each chapter's verbatim text to a cache
-directory (`<book>.digest/`), prints the chapter table, and emits STRUCTURE
-SIGNALS when something looks off. Keep the cache path — every later request
+directory next to the book (`<book-dir>/<book-stem>.digest/`; pass
+`--cache-dir "$TMPDIR/<book-stem>.digest"` if that directory is not writable),
+prints the chapter table, and emits STRUCTURE SIGNALS when something looks off. Keep the cache path — every later request
 reuses it.
 
 If `build_index.py` errors (DRM, scanned/image-only PDF, unsupported format),
@@ -71,11 +85,11 @@ Whatever the user asks for (one chapter, several, a range, by title), resolve it
 to chapter numbers and extract the real text:
 
 ```bash
-python scripts/extract_chapter.py "<cache-dir>" 5          # one chapter
-python scripts/extract_chapter.py "<cache-dir>" 5-7        # range
-python scripts/extract_chapter.py "<cache-dir>" 2,5,9      # specific list
-python scripts/extract_chapter.py "<cache-dir>" --title "habits"
-python scripts/extract_chapter.py "<cache-dir>" --list     # show chapters again
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/extract_chapter.py "<cache-dir>" 5          # one chapter
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/extract_chapter.py "<cache-dir>" 5-7        # range
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/extract_chapter.py "<cache-dir>" 2,5,9      # specific list
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/extract_chapter.py "<cache-dir>" --title "habits"
+~/.claude/skills/.venv/bin/python ~/.claude/skills/book-chapter-digest/scripts/extract_chapter.py "<cache-dir>" --list     # show chapters again
 ```
 
 Read the printed text in full, then write the digest **from that text only**.
@@ -107,11 +121,12 @@ the book's language). **Apply this silently — never ask the user which languag
 to use.** The user's chat language is irrelevant to the digest language: a
 Russian-speaking user reading an English book still gets **English** digests by
 default. Deviate only if the user, unprompted, already named a specific digest
-language — otherwise just detect the book's language and write. The template below is shown with Russian labels as an
-example — render those labels («Суть одной фразой», «Ключевые тезисы», «Что
-можно применить», «Вердикт») in the digest's language too, so an English digest
-uses English headings and an English verdict line. Use this exact template per
-chapter.
+language — otherwise just detect the book's language and write.
+
+The template below is shown with Russian labels as an example — render those
+labels («Суть одной фразой», «Ключевые тезисы», «Что можно применить»,
+«Вердикт») in the digest's language too, so an English digest uses English
+headings and an English verdict line. Use this exact template per chapter.
 
 ```
 ## Глава N — «Точное название из книги»
@@ -225,12 +240,15 @@ If the user explicitly asks «короче», then and only then compress to с�
 | `.epub` | First-class | Splits by TOC (NCX or nav), handles multiple chapters per file via anchors. |
 | `.fb2`  | Good | Splits by `<section>` + `<title>`. |
 | `.txt`  | Best-effort | Splits on heading lines (Глава/Chapter/Часть/…). |
-| `.pdf`  | Best-effort | Uses bookmarks/outline if present; else heading detection. Needs `pypdf` (`pip install pypdf --break-system-packages`). Scanned/image PDFs won't work without OCR. |
+| `.pdf`  | Best-effort | Uses bookmarks/outline if present; else heading detection. Needs `pypdf` from the skills venv (see Setup). Scanned/image PDFs won't work without OCR. |
 
 If a book is `.mobi`/`.azw3`, ask the user to convert it to EPUB (e.g. Calibre),
 which is the most reliable path.
 
 ## Scripts
+
+Both live in `~/.claude/skills/book-chapter-digest/scripts/` and run with
+`~/.claude/skills/.venv/bin/python`.
 
 - `scripts/build_index.py <book> [--cache-dir DIR]` — parse the book, cache real
   chapter text, print the chapter table. Run once per book.
