@@ -52,7 +52,7 @@ LINK_ROOTS=(
 
 KARABINER_REPO="$REPO_DIR/home/.config/karabiner"
 KARABINER_HOME="$HOME_DIR/.config/karabiner"
-RSYNC_OPTS=(-a --delete --exclude automatic_backups --exclude .DS_Store)
+RSYNC_OPTS=(-a --checksum --delete --exclude automatic_backups --exclude .DS_Store)
 
 MODE="push"
 DRY_RUN=0
