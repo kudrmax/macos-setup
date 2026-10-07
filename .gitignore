@@ -7,8 +7,6 @@
 # Karabiner автобэкапы (генерируются автоматически)
 home/.config/karabiner/automatic_backups/
 
-# Claude Code рабочие данные (генерируются автоматически)
-home/.claude/skills/*/data/
 
 # Bruno секреты
 home/Library/Application Support/bruno/secrets.json

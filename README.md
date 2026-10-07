@@ -67,6 +67,12 @@ cd ~/macos-setup && ./sync.sh
 
 `RUNZSH=no` — чтобы установщик Oh-My-Zsh не запускал новый шелл и не обрывал вставленный блок команд.
 
+Личные скиллы Claude Code живут в отдельном репо и клонируются прямо в `~/.claude/skills` (папки не должно существовать до клона):
+
+```bash
+git clone https://github.com/kudrmax/skills.git ~/.claude/skills
+```
+
 > [!WARNING]
 > `home/.gitconfig` содержит мой email. После `sync.sh` проверьте `git config user.email`.
 
@@ -294,7 +300,7 @@ brew install antopolskiy/tap/kanban-md
 └── home/                   ← зеркало ~/, конфиги хранятся здесь
     ├── .zshrc, .zshenv, .zprofile, .p10k.zsh, .hushlogin
     ├── .gitconfig
-    ├── .claude/            ← Claude Code: CLAUDE.md, settings.json, statusline.sh, skills/
+    ├── .claude/            ← Claude Code: CLAUDE.md, settings.json, statusline.sh (скиллы — отдельный репо kudrmax/skills)
     ├── .config/
     │   ├── karabiner/      ← конфиг + правила (копируется, не линкуется)
     │   ├── iterm2/         ← iTerm2 читает отсюда напрямую (PrefsCustomFolder)
