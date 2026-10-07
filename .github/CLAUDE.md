@@ -1,16 +1,17 @@
 # macos-setup
 
-Dotfiles repo. Configs live in `home/`, symlinked to `~/` via `sync.sh`.
+Репо с конфигами macOS, развёрнутое прямо поверх `~`: git-база в `~/.git-macos-setup`, рабочая папка `~`. Файлы в `~` настоящие, симлинков и скриптов синхронизации нет. Инструкция по восстановлению системы — в `~/.github/README.md`.
 
-## Structure
-- `home/` — mirrors `~/`, contains actual config files
-- `sync.sh` — creates symlinks from `home/` to `~/`, backs up existing files
-- BTT exports are skipped by sync (manual import)
-- iTerm2 — не симлинкается, а нативно указывает PrefsCustomFolder на репо (сам читает/пишет конфиг оттуда). `sync.sh` сам проставляет `PrefsCustomFolder` + `LoadPrefsFromCustomFolder` через `defaults write`
-- Karabiner — симлинки не работают (ломает при записи). `sync.sh` копирует repo→~/ (предупреждает если ~/новее). `copy.sh` копирует ~/→repo (запускать перед коммитом)
+## Как устроено
+- В репо только явно добавленные файлы (`git-macos-setup ls-files`). Остальная домашняя папка не отслеживается и скрыта из `status` настройкой `status.showUntrackedFiles=no`.
+- Команды для репо: `git-macos-setup <git-команда>` и `lazygit-macos-setup` (алиасы в `~/.zshrc`).
+- Пакеты: `~/.Brewfile`, ставится `brew bundle --global`.
+- Личные скиллы Claude Code — отдельный репо `kudrmax/skills` в `~/.claude/skills`. Коллекции Bruno — отдельный репо в `~/bruno`.
 
-## Rules
-- Never edit configs outside `home/` — they're symlinks
-- After adding new configs: put in `home/` at the same path as `~/`, run `sync.sh`
-- Secrets (tokens, credentials) never go in repo — add to `.gitignore`
-- All apps and tools should be installed via `brew` / `brew --cask` whenever possible. Manual install only if brew package doesn't exist
+## Правила
+- Конфиги править на месте в `~`, коммитить через `git-macos-setup` (или оставить коммит пользователю, он работает через lazygit).
+- Новый конфиг добавлять только явно: `git-macos-setup add <путь>`. Никогда `add -A`, `add .` или `add ~`.
+- Не класть в `~/.gitignore` паттерн `*`.
+- Секреты (токены, пароли, `claude_desktop_config.json`, `~/.ssh`, `~/.config/gh/hosts.yml`) в репо не добавлять.
+- Приложения и утилиты ставить через `brew` / `brew --cask` / `mas` и сразу вписывать в `~/.Brewfile`. Вручную — только если в brew и App Store пакета нет, тогда строка в README в раздел «Ручная установка».
+- Не создавать в репо скрипты, хуки, папки `docs/` и спеки без явного согласия пользователя.

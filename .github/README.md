@@ -1,6 +1,6 @@
 # macOS setup
 
-Конфиги и инструкции для настройки macOS с нуля. Конфиги хранятся в `home/` и симлинкаются в `~/` скриптом `sync.sh`.
+Конфиги и инструкция для настройки macOS с нуля. Репо лежит **прямо поверх домашней папки**: git-база в `~/.git-macos-setup`, рабочая папка `~`. Файлы в `~` настоящие, без симлинков и копий. Подробнее в разделе «[Как это работает](#как-это-работает)».
 
 > [!IMPORTANT]
 > Если `brew install` падает или зависает на каких-то пакетах (особенно cask) — скорее всего, нужен VPN. Часть ресурсов, с которых brew качает бинари, заблокирована в РФ. Поэтому **Hiddify ставим в первую очередь** (шаг 2), и только потом всё остальное.
@@ -11,20 +11,15 @@
 
 ### 1. Критический минимум
 
-Без этого невозможно продолжить: Homebrew, репо с конфигами, терминал, браузер, мессенджер, Claude Code.
-
 ```bash
 # 1.1 Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# 1.2 Склонировать репо
-git clone https://github.com/kudrmax/macos-setup ~/macos-setup
-
-# 1.3 Минимальный набор приложений
+# 1.2 Минимальный набор приложений
 brew install --cask iterm2 google-chrome telegram claude-code@latest
 ```
 
-Если что-то из шага 1.3 не ставится — переходи к шагу 2 (VPN), затем вернись и повтори.
+Если что-то из шага 1.2 не ставится — переходи к шагу 2 (VPN), затем вернись и повтори.
 
 ### 2. VPN и прокси (обязательно до всего остального)
 
@@ -37,140 +32,100 @@ Hiddify — клиент для прокси-протоколов (Xray, Sing-bo
 2. Импортировать профиль провайдера (ссылка `hiddify://...` или подписка) и включить подключение.
 3. Убедиться, что Hiddify слушает прокси на порту `12334`.
    Этот порт по умолчанию, трогать настройки обычно не нужно. Проверить можно в настройках Hiddify в поле с названием типа «Mixed port» / «Порт прокси» — там должно быть `12334`.
-   Если порт другой — либо поменяй его в Hiddify на `12334`, либо поправь в `home/.zshrc` переменную `HIDDIFY_PORT` и порт в функциях `vpn-check` / `vpn-on`.
+   Если порт другой — либо поменяй его в Hiddify на `12334`, либо поправь в `~/.zshrc` переменную `HIDDIFY_PORT` и порт в функциях `vpn-check` / `vpn-on`.
 4. Проверить, что прокси реально работает — команда печатает внешний IP:
    ```bash
    curl -s -m 5 -x http://127.0.0.1:12334 https://api.ipify.org
    ```
    Если пусто или ошибка — Hiddify не запущен или порт не `12334`.
-5. Для `brew install` на следующем шаге включить прокси в текущем терминале:
+5. Для `git clone` и `brew` на следующих шагах включить прокси в текущем терминале:
    ```bash
    export http_proxy="http://127.0.0.1:12334"
    export https_proxy="http://127.0.0.1:12334"
    export all_proxy="socks5://127.0.0.1:12334"
    ```
-   Прокси живёт только в этом шелле — в новом терминале его снова нет. После шага 4 то же самое делают функции `vpn-on` / `vpn-off` из `home/.zshrc`, а `vpn-check` повторяет проверку выше.
+   Прокси живёт только в этом шелле — в новом терминале его снова нет. После шага 3 то же самое делают функции `vpn-on` / `vpn-off` из `~/.zshrc`, а `vpn-check` повторяет проверку выше.
 6. Claude Code запускать **только через команду `cl`** (не через `claude`).
-   `cl` — это функция из `home/.zshrc`, которая перед запуском `claude` прокидывает трафик через Hiddify (`127.0.0.1:12334`). Без неё Claude Code не сможет достучаться до API из РФ.
-   Команда появится в шелле после шага 4 ниже (`sync.sh` + перезапуск терминала).
+   `cl` — это функция из `~/.zshrc`, которая перед запуском `claude` прокидывает трафик через Hiddify (`127.0.0.1:12334`). Без неё Claude Code не сможет достучаться до API из РФ.
+   Команда появится в шелле после шага 3 и перезапуска терминала.
 
-### 3. Полная установка пакетов
+### 3. Развернуть репо с конфигами в `~`
 
-См. раздел «[Установка пакетов](#установка-пакетов)» ниже — одним блоком, копируется целиком. Ставить до `sync.sh`: `.zshrc` подключает powerlevel10k, fzf, atuin, zoxide и без них будет сыпать ошибками при старте терминала.
+```bash
+git clone --bare https://github.com/kudrmax/macos-setup.git ~/.git-macos-setup
+git --git-dir=$HOME/.git-macos-setup --work-tree=$HOME checkout
+git --git-dir=$HOME/.git-macos-setup --work-tree=$HOME config status.showUntrackedFiles no
+```
 
-### 4. Oh-My-Zsh и симлинки
+Вторая команда раскладывает все конфиги по их местам в `~`. Если git ответит `untracked working tree files would be overwritten` — в `~` уже есть файл с таким именем (обычно `.zshrc` или `.gitconfig`, созданные macOS). Убрать его в сторону и повторить:
+
+```bash
+mkdir -p ~/.config-before-setup && mv ~/.zshrc ~/.config-before-setup/
+```
+
+Третья команда прячет из `git status` всё, что в репо не отслеживается (иначе он покажет всю домашнюю папку).
+
+> [!WARNING]
+> `~/.gitconfig` содержит мой email. После разворачивания проверьте `git config user.email`.
+
+### 4. Пакеты
+
+```bash
+brew bundle --global
+```
+
+Ставит всё из `~/.Brewfile` (он уже лежит в `~` после шага 3): формулы, cask, приложения из App Store (через `mas`, для них нужно быть залогиненным в App Store). Если что-то упало — команду можно безопасно повторить, уже установленное пропускается.
+
+> [!NOTE]
+> На рабочей машине с avito brew-прокси (`HOMEBREW_BOTTLE_DOMAIN` и т.п.) — если прокси резолвится, но brew всё равно падает вне корп-сети, запусти команды с пустыми значениями:
+> `HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew bundle --global`
+> НЕ делать `unset` — переменные нужны в `.zprofile` внутри корп-сети.
+
+### 5. Oh-My-Zsh, скиллы Claude Code, Bruno
 
 ```bash
 RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-cd ~/macos-setup && ./sync.sh
-```
-
-`RUNZSH=no` — чтобы установщик Oh-My-Zsh не запускал новый шелл и не обрывал вставленный блок команд.
-
-Личные скиллы Claude Code живут в отдельном репо и клонируются прямо в `~/.claude/skills` (папки не должно существовать до клона):
-
-```bash
 git clone https://github.com/kudrmax/skills.git ~/.claude/skills
+git clone https://github.com/kudrmax/bruno-collections.git ~/bruno
 ```
 
-> [!WARNING]
-> `home/.gitconfig` содержит мой email. После `sync.sh` проверьте `git config user.email`.
+- `RUNZSH=no` — чтобы установщик Oh-My-Zsh не запускал новый шелл и не обрывал вставленный блок команд.
+- Личные скиллы Claude Code живут в отдельном репо и клонируются прямо в `~/.claude/skills` (папки не должно существовать до клона).
+- Коллекции запросов Bruno — отдельный приватный репо, путь `~/bruno/avito` прописан в `preferences.json`.
 
-### 5. Node.js
+После этого перезапустить терминал.
 
-nvm уже установлен на шаге 3 через brew. Ставим LTS-версию Node.js:
+### 6. Node.js
+
+nvm уже установлен на шаге 4 через brew. Ставим LTS-версию Node.js:
 
 ```bash
 nvm install --lts
 ```
 
-### 6. Ручная настройка
+### 7. Ручная настройка
 
 См. «[Ручная настройка после установки](#ручная-настройка-после-установки)».
 
-## Установка пакетов
+## Как это работает
 
-Весь список — одним блоком, разбит комментариями по категориям. Если какой-то `brew install` упал — блок можно безопасно перезапустить, brew пропустит уже установленные.
+Git умеет держать свою базу отдельно от рабочей папки. Здесь база лежит в `~/.git-macos-setup`, а рабочая папка — `~`. Поэтому `~/.zshrc`, `~/.config/karabiner/karabiner.json` и остальные конфиги — обычные файлы, которые git отслеживает по их настоящим путям. Приложения пишут в них как в обычные файлы, ломать нечего.
 
-```bash
-# === Terminal ===
-brew install powerlevel10k zsh-autosuggestions zsh-syntax-highlighting \
-  zsh-history-substring-search zsh-you-should-use fzf atuin zoxide micro
-brew install --cask iterm2
+Чтобы не писать флаги `--git-dir` и `--work-tree` каждый раз, в `~/.zshrc` два алиаса:
 
-# === Современные замены CLI-утилит ===
-brew install bat       # cat
-brew install eza       # ls
-brew install fd        # find
-brew install ripgrep   # grep
-brew install trash     # rm (в корзину)
-brew install jq        # JSON парсинг
+| Команда | Что делает |
+|---|---|
+| `lazygit-macos-setup` | lazygit для этого репо: посмотреть изменения, закоммитить, запушить |
+| `git-macos-setup add <файл>` | добавить новый конфиг в репо |
+| `git-macos-setup status` / `diff` / `pull` / `push` | обычный git для этого репо |
 
-# === Git ===
-brew install lazygit git-delta
+Повседневно:
+- Поправил конфиг (руками или через GUI приложения, например Karabiner) → `lazygit-macos-setup` → коммит → push.
+- На другой машине: `git-macos-setup pull` перед правками. Если файл менялся с обеих сторон, git скажет об этом и ничего не затрёт.
+- Новая программа: `brew install ...`, строка в `~/.Brewfile`, конфиг через `git-macos-setup add`, коммит.
+- Проверить полноту: `brew bundle check --global` (чего из Brewfile нет на машине), `brew bundle cleanup --global` (что стоит, но не записано; без `--force` только показывает).
 
-# === Docker ===
-brew install lazydocker
-
-# === Языки и рантаймы ===
-brew install go nvm libpq python
-
-# === Медиа ===
-brew install yt-dlp
-
-# === Утилиты ===
-brew install --cask maccy bitwarden appcleaner bettertouchtool \
-  karabiner-elements sublime-text
-
-# === AI ===
-brew install --cask claude claude-code@latest
-
-# === Приложения ===
-brew install --cask google-chrome telegram iina todoist-app obsidian \
-  morgen yandex-music arc bruno
-```
-
-> [!NOTE]
-> На рабочей машине с avito brew-прокси (`HOMEBREW_BOTTLE_DOMAIN` и т.п.) — если прокси резолвится, но brew всё равно падает вне корп-сети, запусти команды с пустыми значениями:
-> `HOMEBREW_BOTTLE_DOMAIN="" HOMEBREW_CORE_GIT_REMOTE="" HOMEBREW_BREW_GIT_REMOTE="" brew install ...`
-> НЕ делать `unset` — переменные нужны в `.zprofile` внутри корп-сети.
-
-### Проверка установленных пакетов
-
-Скрипт ниже печатает, каких пакетов из требуемого набора не хватает. Копируется и запускается целиком:
-
-```bash
-FORMULAE=(
-  powerlevel10k zsh-autosuggestions zsh-syntax-highlighting
-  zsh-history-substring-search zsh-you-should-use fzf atuin zoxide micro
-  bat eza fd ripgrep trash jq
-  lazygit git-delta lazydocker
-  go nvm libpq python
-  yt-dlp
-)
-CASKS=(
-  iterm2
-  maccy bitwarden appcleaner bettertouchtool karabiner-elements sublime-text
-  claude claude-code@latest
-  google-chrome telegram iina todoist-app obsidian morgen yandex-music arc bruno
-)
-
-missing_formulae=()
-missing_casks=()
-for f in "${FORMULAE[@]}"; do
-  brew list --formula "$f" &>/dev/null || missing_formulae+=("$f")
-done
-for c in "${CASKS[@]}"; do
-  brew list --cask "$c" &>/dev/null || missing_casks+=("$c")
-done
-
-if (( ${#missing_formulae[@]} == 0 && ${#missing_casks[@]} == 0 )); then
-  echo "✓ Все пакеты установлены"
-else
-  (( ${#missing_formulae[@]} )) && echo "✗ Не хватает формул: ${missing_formulae[*]}"
-  (( ${#missing_casks[@]} ))    && echo "✗ Не хватает cask:    ${missing_casks[*]}"
-fi
-```
+Два правила: не делать `git-macos-setup add -A` или `add .` (добавит всю домашнюю папку) и не класть `*` в `~/.gitignore` (ломает поиск `ripgrep` в других каталогах).
 
 ## Ручная настройка после установки
 
@@ -185,17 +140,22 @@ p10k configure
 
 ### iTerm2
 
-Ничего импортировать не нужно: `sync.sh` прописывает в iTerm2 путь к `home/.config/iterm2/` (настройка `PrefsCustomFolder`), и iTerm2 сам читает и пишет конфиг оттуда. После первого `sync.sh` перезапусти iTerm2.
+iTerm2 умеет читать настройки из произвольной папки. Указать ему `~/.config/iterm2` (файл там уже лежит после шага 3), затем перезапустить iTerm2:
+
+```bash
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.config/iterm2"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+```
 
 ### BTT (Better Touch Tool)
 
-1. Presets → Import presets → `~/macos-setup/home/.config/btt_preset.bttpreset`
+1. Presets → Import presets → `~/.config/btt_preset.bttpreset`
 2. Preset (в левом верхнем углу) → удалить default preset
 3. Fix 4 Finger Swipe Down: 4 Finger Swipe Down → Application Switcher → Use Gesture Mode
 
 ### Karabiner Elements
 
-Karabiner ломает симлинки при записи, поэтому его папка копируется, а не линкуется: `./sync.sh` копирует из репо в `~/`, `./sync.sh pull` — обратно в репо. Если правил что-то в GUI Karabiner — перед коммитом запусти `./sync.sh pull`. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
+Конфиг `~/.config/karabiner/karabiner.json` — обычный файл из репо, Karabiner подхватывает его сам. Правки в GUI Karabiner видны в `lazygit-macos-setup` как изменения файла. Если проблемы с `karabiner_grabber` — перезагрузить компьютер.
 
 ### Автообновление Homebrew
 
@@ -203,18 +163,13 @@ Karabiner ломает симлинки при записи, поэтому ег
 
 ```bash
 brew tap domt4/autoupdate
+brew trust domt4/autoupdate
 brew autoupdate start 86400 --upgrade --cleanup --leaves-only --ac-only
 ```
 
+`brew trust` обязателен: с 2026 года Homebrew игнорирует команды из сторонних tap, пока tap не помечен доверенным.
+
 Логи: `~/Library/Logs/com.github.domt4.homebrew-autoupdate/com.github.domt4.homebrew-autoupdate.out`
-
-### Bruno
-
-```bash
-git clone git@github.com:kudrmax/bruno-collections.git ~/bruno
-```
-
-Коллекции запросов хранятся в отдельном приватном репо. После клонирования Bruno подхватит их автоматически (путь прописан в `preferences.json`).
 
 ### Chrome расширения
 
@@ -276,10 +231,11 @@ brew services start colima
 
 Kanban-доска в markdown-файлах: https://github.com/antopolskiy/kanban-md
 
-Устанавливается через tap:
+Устанавливается через tap (`brew trust` обязателен, см. выше):
 
 ```bash
 brew tap antopolskiy/tap
+brew trust antopolskiy/tap
 brew install antopolskiy/tap/kanban-md
 ```
 
@@ -291,51 +247,35 @@ brew install antopolskiy/tap/kanban-md
 
 ## Структура репо
 
+Корень репо — `~`. В git только перечисленные файлы, остальная домашняя папка не отслеживается.
+
 ```
-~/macos-setup/
-├── sync.sh                 ← репо → ~/ (симлинки, Karabiner, iTerm2); `sync.sh pull` — Karabiner обратно
-├── README.md
-├── CLAUDE.md               ← инструкции Claude Code для работы с этим репо
+~/
+├── .git-macos-setup/       ← git-база репо (не трогать руками)
+├── .Brewfile               ← все пакеты: brew, cask, App Store
 ├── .gitignore
-├── bruno/                  ← git submodule с коллекциями Bruno (приватный репо)
-└── home/                   ← зеркало ~/, конфиги хранятся здесь
-    ├── .zshrc, .zshenv, .zprofile, .p10k.zsh, .hushlogin
-    ├── .gitconfig
-    ├── .claude/            ← Claude Code: CLAUDE.md, settings.json, statusline.sh (скиллы — отдельный репо kudrmax/skills)
-    ├── .config/
-    │   ├── karabiner/      ← конфиг + правила (копируется, не линкуется)
-    │   ├── iterm2/         ← iTerm2 читает отсюда напрямую (PrefsCustomFolder)
-    │   ├── micro/          ← биндинги редактора micro
-    │   ├── mpv/            ← скрипты и конфиги для MPV
-    │   └── btt_preset.bttpreset  ← ручной импорт в BetterTouchTool
-    └── Library/
-        ├── Application Support/
-        │   ├── lazygit/config.yml
-        │   ├── lazydocker/config.yml
-        │   ├── bruno/preferences.json
-        │   ├── Code/User/settings.json              ← VS Code
-        │   ├── Sublime Text/Packages/User/          ← Sublime Text
-        │   └── com.colliderli.iina/                 ← IINA горячие клавиши
-        └── Preferences/org.p0deje.Maccy.plist       ← Maccy
+├── .github/
+│   ├── README.md           ← этот файл
+│   └── CLAUDE.md           ← инструкции Claude Code для работы с этим репо
+├── .zshrc, .zshenv, .zprofile, .p10k.zsh, .hushlogin
+├── .gitconfig
+├── .ipython/profile_default/ipython_config.py
+├── .claude/                ← Claude Code: CLAUDE.md, settings.json, statusline.sh
+│   └── skills/             ← отдельный репо kudrmax/skills, в этот не входит
+├── .config/
+│   ├── karabiner/          ← конфиг + правила
+│   ├── iterm2/             ← iTerm2 читает отсюда напрямую (PrefsCustomFolder)
+│   ├── micro/              ← биндинги редактора micro
+│   ├── mpv/                ← скрипты и конфиги для MPV
+│   └── btt_preset.bttpreset  ← ручной импорт в BetterTouchTool
+├── bruno/                  ← отдельный приватный репо bruno-collections, в этот не входит
+└── Library/
+    ├── Application Support/
+    │   ├── lazygit/config.yml
+    │   ├── lazydocker/config.yml
+    │   ├── bruno/preferences.json
+    │   ├── Code/User/settings.json              ← VS Code
+    │   ├── Sublime Text/Packages/User/          ← Sublime Text
+    │   └── com.colliderli.iina/                 ← IINA горячие клавиши
+    └── Preferences/org.p0deje.Maccy.plist       ← Maccy
 ```
-
-## Как это работает
-
-`./sync.sh` берёт список файлов из git (`git ls-files home`) и на каждый создаёт симлинк:
-- `~/.zshrc` → `~/macos-setup/home/.zshrc`
-- `~/.claude/settings.json` → `~/macos-setup/home/.claude/settings.json`
-- и т.д.
-
-После этого любые изменения конфигов сразу видны в `git status`.
-
-Исключения:
-- **Karabiner** ломает симлинки при записи, поэтому папка копируется: `./sync.sh` из репо в `~/`, `./sync.sh pull` обратно. Перед копированием содержимое папок сравнивается; если в приёмнике есть более новые или лишние файлы — скрипт печатает `CONFLICT` и ничего не трогает.
-- **iTerm2** читает конфиг прямо из `home/.config/iterm2/` — скрипт прописывает путь через `defaults write`.
-- **BTT**-пресет импортируется вручную.
-
-Защита от потери настроек:
-- Если в `~/` на месте симлинка лежит обычный файл и он отличается от репо (так бывает, когда приложение само переписало конфиг), скрипт печатает `CONFLICT` с diff и файл не трогает. Взять версию из репо: `./sync.sh --force`.
-- Заменённые файлы складываются в `.backup/<дата>/`, хранятся последние 5 снимков.
-- Симлинки на файлы, удалённые из репо, удаляются в корзину.
-- `./sync.sh --dry-run` показывает план без изменений.
-- Из git worktree скрипт не запускается: симлинки должны вести в основной чекаут.

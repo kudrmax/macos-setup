@@ -207,6 +207,10 @@ chatgpt() {
     --env "NO_PROXY=$PROXY_BYPASS"
 }
 
+# Репо с конфигами macOS живёт поверх ~ (git-база в ~/.git-macos-setup, рабочая папка ~)
+alias git-macos-setup='git --git-dir=$HOME/.git-macos-setup --work-tree=$HOME'
+alias lazygit-macos-setup='lazygit --git-dir=$HOME/.git-macos-setup --work-tree=$HOME'
+
 # restart-avito-docker — перезапуск Lima VM для Avito Docker (без VPN)
 restart-avito-docker() {
   limactl stop avito && limactl start avito
