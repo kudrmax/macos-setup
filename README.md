@@ -21,7 +21,7 @@
 git clone https://github.com/kudrmax/macos-setup ~/macos-setup
 
 # 1.3 Минимальный набор приложений
-brew install --cask iterm2 google-chrome telegram claude-code
+brew install --cask iterm2 google-chrome telegram claude-code@latest
 ```
 
 Если что-то из шага 1.3 не ставится — переходи к шагу 2 (VPN), затем вернись и повтори.
@@ -123,11 +123,11 @@ brew install --cask maccy bitwarden appcleaner bettertouchtool \
   karabiner-elements sublime-text
 
 # === AI ===
-brew install --cask claude claude-code
+brew install --cask claude claude-code@latest
 
 # === Приложения ===
 brew install --cask google-chrome telegram iina todoist-app obsidian \
-  morgen yandex-music arc qbittorrent bruno
+  morgen yandex-music arc bruno
 ```
 
 > [!NOTE]
@@ -151,8 +151,8 @@ FORMULAE=(
 CASKS=(
   iterm2
   maccy bitwarden appcleaner bettertouchtool karabiner-elements sublime-text
-  claude claude-code
-  google-chrome telegram iina todoist-app obsidian morgen yandex-music arc qbittorrent bruno
+  claude claude-code@latest
+  google-chrome telegram iina todoist-app obsidian morgen yandex-music arc bruno
 )
 
 missing_formulae=()
@@ -287,6 +287,7 @@ brew install antopolskiy/tap/kanban-md
 
 - [Xnip](https://xnipapp.com/) — скриншоты
 - [OwlOCR](https://www.owlocr.com/) — OCR
+- [qBittorrent](https://www.qbittorrent.org/download) — cask `qbittorrent` отключён в Homebrew с 2026-09-01 (не проходит проверку Gatekeeper), ставить dmg с сайта
 
 ## Структура репо
 
