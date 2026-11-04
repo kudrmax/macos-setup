@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "TaskCalendar",
+      "clone": "/Users/mdmkudryashov/projects/obsidian-my-own-plugins/task-calendar-ios"
+    }
+  ]
+}
