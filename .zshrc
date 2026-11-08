@@ -93,11 +93,7 @@ unset _nvm_cmd
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
-# LM Studio — локальный запуск LLM-моделей
-export PATH="$PATH:$HOME/.lmstudio/bin"
-
-# Android — Gradle кэш в Shared (для beduinv2), JDK 17
-export GRADLE_USER_HOME=/Users/Shared/gradle
+# JDK 17
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
 # kanban-md — Kanban в markdown
