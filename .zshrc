@@ -6,6 +6,9 @@ fi
 # oh-my-zsh — фреймворк для плагинов и настроек zsh
 export ZSH="$HOME/.oh-my-zsh"
 plugins=(git command-not-found)
+# Обновление только напоминанием: вопрос «Would you like to update? [Y/n]» съедает первый символ
+# команды, которую набирает Terminal (.command, «Install TaskCalendar»), и она не запускается.
+zstyle ':omz:update' mode reminder
 source $ZSH/oh-my-zsh.sh
 
 # Алиасы
