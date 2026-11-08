@@ -1,0 +1,82 @@
+#!/bin/bash
+# Who uses which of the four working iOS simulators. A simulator is busy while its lock exists and was touched within
+# STALE_MIN minutes; an older lock is abandoned and can be taken over.
+#   ios-sim take <who>     take a free simulator, print its UDID (exit 1 when all are busy)
+#   ios-sim wait <who>     take the first one that frees up, polling every 30 s
+#   ios-sim beat <udid>    the holder is still working (the guard hook also does it on every command naming the UDID)
+#   ios-sim release <udid> give it back
+#   ios-sim list           every simulator: free or who holds it, since when, last beat
+set -euo pipefail
+
+LOCKS="$HOME/.claude/sim-locks"
+STALE_MIN=60
+SIMS=(
+	"5D36663C-174F-4378-BD1C-1E0EF1C99996 iPhone 16 Pro"
+	"9450219F-9A47-4870-9A67-8FE506DEC67B iPhone 16 Pro 2"
+	"2FEBC771-1E0B-4772-BE6E-9C1AA0BD8DE9 iPhone 16 Pro 3"
+	"330C3378-17C8-4C8C-941D-DB2F423B224D iPhone 16 Pro 4"
+)
+mkdir -p "$LOCKS"
+
+udid_of() { echo "${1%% *}"; }
+name_of() { echo "${1#* }"; }
+lock_of() { echo "$LOCKS/$1"; }
+
+stale() {
+	local beat="$(lock_of "$1")/beat"
+	[ -f "$beat" ] || return 0
+	[ -n "$(find "$beat" -mmin +"$STALE_MIN" 2>/dev/null)" ]
+}
+
+claim() {
+	local udid="$1" who="$2" lock
+	lock="$(lock_of "$udid")"
+	if ! mkdir "$lock" 2>/dev/null; then
+		stale "$udid" || return 1
+		echo "taking over an abandoned lock: $(cat "$lock/owner" 2>/dev/null)" >&2
+	fi
+	printf '%s\t%s\n' "$who" "$(date '+%Y-%m-%d %H:%M')" >"$lock/owner"
+	touch "$lock/beat"
+}
+
+take() {
+	local who="${1:?who is taking it}" sim
+	for sim in "${SIMS[@]}"; do
+		if claim "$(udid_of "$sim")" "$who"; then
+			echo "$(udid_of "$sim")"
+			echo "took $(name_of "$sim") — release it when done: ios-sim release $(udid_of "$sim")" >&2
+			return 0
+		fi
+	done
+	echo "all four simulators are busy:" >&2
+	list >&2
+	return 1
+}
+
+case "${1:-list}" in
+take) take "${2:-}" ;;
+wait)
+	until take "${2:?who is waiting}" 2>/dev/null; do sleep 30; done
+	;;
+beat) touch "$(lock_of "${2:?udid}")/beat" ;;
+release)
+	lock="$(lock_of "${2:?udid}")"
+	[ -d "$lock" ] && trash "$lock"
+	echo "released $2"
+	;;
+list)
+	booted=$(xcrun simctl list devices booted 2>/dev/null)
+	for sim in "${SIMS[@]}"; do
+		udid=$(udid_of "$sim") lock=$(lock_of "$(udid_of "$sim")")
+		state=$(grep -q "$udid" <<<"$booted" && echo booted || echo shutdown)
+		if [ -d "$lock" ] && ! stale "$udid"; then
+			IFS=$'\t' read -r who since <"$lock/owner"
+			beat=$(date -r "$lock/beat" '+%H:%M')
+			printf '%-16s %s  busy  %s (since %s, last beat %s), %s\n' "$(name_of "$sim")" "$udid" "$who" "$since" "$beat" "$state"
+		else
+			printf '%-16s %s  free  %s\n' "$(name_of "$sim")" "$udid" "$state"
+		fi
+	done
+	;;
+*) echo "usage: ios-sim take|wait <who> | beat|release <udid> | list" >&2; exit 2 ;;
+esac

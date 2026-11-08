@@ -1,4 +1,78 @@
 {
+  "agentPushNotifEnabled": true,
+  "editorMode": "normal",
+  "effortLevel": "high",
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "/usr/local/bin/avito internal-claude-hook SessionStart",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "/usr/local/bin/avito internal-claude-hook SubagentStart",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "/usr/local/bin/avito internal-claude-hook SubagentStop",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit|.*preview_start",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-anki-port.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|mcp__Claude_Code_iOS_Simulator__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-ios-sim.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "inputNeededNotifEnabled": true,
+  "language": "Русский",
+  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "WebSearch",
@@ -35,36 +109,27 @@
       "Bash(brew list:*)",
       "Bash(brew info:*)",
       "Bash(brew search:*)",
-      "Bash(trash:*)"
+      "Bash(trash:*)",
+      "Bash(baton:*)"
     ],
+    "defaultMode": "auto",
     "deny": [
       "Bash(rm:*)",
       "Bash(unlink:*)",
       "Bash(rmdir:*)"
-    ],
-    "defaultMode": "auto"
+    ]
   },
-  "model": "opus[1m]",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "enabledPlugins": {
-    "context7@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
-  "language": "Русский",
-  "effortLevel": "high",
-  "tui": "fullscreen",
-  "skipWorkflowUsageWarning": true,
-  "editorMode": "normal",
-  "verbose": true,
   "preferredNotifChannel": "terminal_bell",
-  "terminalProgressBarEnabled": true,
   "remoteControlAtStartup": false,
-  "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "statusLine": {
+    "command": "~/.claude/statusline.sh",
+    "type": "command"
+  },
+  "terminalProgressBarEnabled": true,
+  "tui": "fullscreen",
+  "verbose": true,
   "voice": {
     "enabled": true
   }
