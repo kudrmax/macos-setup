@@ -8,7 +8,39 @@
     "gopls-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
+  "extraKnownMarketplaces": {
+    "avito-skills": {
+      "autoUpdate": true,
+      "source": {
+        "source": "git",
+        "url": "git@stash.msk.avito.ru:7999/agent/skills.git"
+      }
+    }
+  },
+  "forceLoginMethod": "claudeai",
   "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "~/.claude/hooks/guard-anki-port.sh",
+            "timeout": 5,
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash|Write|Edit|MultiEdit|.*preview_start"
+      },
+      {
+        "hooks": [
+          {
+            "command": "~/.claude/hooks/guard-ios-sim.sh",
+            "timeout": 5,
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash|mcp__Claude_Code_iOS_Simulator__.*"
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
@@ -46,28 +78,6 @@
           }
         ],
         "matcher": ""
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash|Write|Edit|MultiEdit|.*preview_start",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/guard-anki-port.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|mcp__Claude_Code_iOS_Simulator__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/guard-ios-sim.sh",
-            "timeout": 5
-          }
-        ]
       }
     ]
   },
@@ -129,6 +139,7 @@
     "type": "command"
   },
   "terminalProgressBarEnabled": true,
+  "theme": "dark",
   "tui": "fullscreen",
   "verbose": true,
   "voice": {

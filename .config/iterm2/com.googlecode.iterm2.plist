@@ -39,7 +39,7 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x52-0x120000-0xf</key>
+		<key>0x52-0x120000-0xf-0x1</key>
 		<dict>
 			<key>Action</key>
 			<integer>10</integer>
