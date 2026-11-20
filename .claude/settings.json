@@ -25,6 +25,7 @@
     }
   },
   "forceLoginMethod": "claudeai",
+  "idleCompaction": false,
   "hooks": {
     "PreToolUse": [
       {
