@@ -6,7 +6,8 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "flow@flow-local": true
   },
   "extraKnownMarketplaces": {
     "avito-skills": {
@@ -14,6 +15,12 @@
       "source": {
         "source": "git",
         "url": "git@stash.msk.avito.ru:7999/agent/skills.git"
+      }
+    },
+    "flow-local": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/mdmkudryashov/projects/flow"
       }
     }
   },
@@ -144,5 +151,8 @@
   "verbose": true,
   "voice": {
     "enabled": true
+  },
+  "env": {
+    "FLOW_HOME": "~/projects/flow/context"
   }
 }
